@@ -34,7 +34,7 @@ func (s *SQLSmith) BatchGenSQL(n int) []string {
 		wg.Add(1)
 		go func(idx int) {
 			defer wg.Done()
-			_ = s.constructSelectStmt(nil, rand.Int())
+			_ = s.constructSelectStmt(nil, rand.Intn(10))
 			s, err := s.ToSQL()
 			if err != nil {
 				return
