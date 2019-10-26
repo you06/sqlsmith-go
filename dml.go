@@ -24,35 +24,29 @@ func (s *SQLSmith) constructSelectStmt(pNode ast.Node, depth int) (cNode ast.Nod
 	r := rand.Intn(100)
 	switch pNode.(type) {
 	case nil:
-		sstmt := &ast.SelectStmt{}
-		if r>10{
-			sstmt.Distinct = true
-		}
-		if r>20{
-			sstmt.From = &ast.TableRefsClause{
-				TableRefs:&ast.Join{
-
-				},
-			}
-		}
-		if r>30{
-
-		}
-		if r > 40{
-
-		}
-		return s.constructSelectStmt(sstmt, depth - 1)
+		return s.constructSelectStmt(nil, depth - 1)
 	case *ast.SelectStmt:
+		return s.constructSelectStmt(nil, depth - 1)
 	case *ast.TableRefsClause:
+		return s.constructSelectStmt(nil, depth - 1)
 	case ast.ExprNode:
+		return s.constructSelectStmt(nil, depth - 1)
 	case *ast.GroupByClause:
+		return s.constructSelectStmt(nil, depth - 1)
 	case *ast.HavingClause:
+		return s.constructSelectStmt(nil, depth - 1)
 	case *ast.WindowSpec:
+		return s.constructSelectStmt(nil, depth - 1)
 	case *ast.OrderByClause:
+		return s.constructSelectStmt(nil, depth - 1)
 	case *ast.Limit:
+		return s.constructSelectStmt(nil, depth - 1)
 	case *ast.Join:
+		return s.constructSelectStmt(nil, depth - 1)
 	case ast.ResultSetNode:
+		return s.constructSelectStmt(nil, depth - 1)
 	case *ast.OnCondition:
+		return s.constructSelectStmt(nil, depth - 1)
 	default:
 		return pNode
 	}
