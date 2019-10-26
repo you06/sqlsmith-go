@@ -1,0 +1,5 @@
+package sqlsmith
+
+func New() {
+
+}
