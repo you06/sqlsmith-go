@@ -19,8 +19,8 @@ func TestSQLSmith_ToSQL(t *testing.T) {
 		[5]string{"community", "tasks", "BASE TABLE", "min_score", "int(11)"},
 		[5]string{"community", "tasks", "BASE TABLE", "score", "int(11)"},
 		[5]string{"community", "tasks", "BASE TABLE", "status", "varchar(255)"},
-		[5]string{"community", "picks", "BASE TABLE", "created_at", "timestamp"},
-		[5]string{"community", "picks", "BASE TABLE", "expired", "varchar(255)"},
+		[5]string{"community", "tasks", "BASE TABLE", "created_at", "timestamp"},
+		[5]string{"community", "tasks", "BASE TABLE", "expired", "varchar(255)"},
 		// picks table
 		[5]string{"community", "picks", "BASE TABLE", "id", "int(11)"},
 		[5]string{"community", "picks", "BASE TABLE", "season", "int(11)"},
@@ -37,9 +37,9 @@ func TestSQLSmith_ToSQL(t *testing.T) {
 	// for _,v:=range resultSet{
 	// 	t.Log(v)
 	// }
-	node := ss.SelectStmt(3)
-	t.Log(node)
+	node := ss.SelectStmt(10)
 
+	ss.SetDB("community")
 	sql, err :=	ss.Walk(node)
 
 	if err != nil {

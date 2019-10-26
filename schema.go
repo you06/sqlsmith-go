@@ -76,7 +76,7 @@ func (s *SQLSmith) randTableFromTable(table *Table, newName bool) (*Table) {
 }
 
 func (s *SQLSmith) randTable(newName bool) (*Table) {
-	tables := s.Databases["community"].Tables
+	tables := s.Databases[s.currDB].Tables
 	index := 0
 	k := s.rd(len(tables))
 	for _, table := range tables {

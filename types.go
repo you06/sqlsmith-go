@@ -13,6 +13,7 @@ type SQLSmith struct {
 	Databases map[string]*Database
 	subTableIndex int
 	Node ast.Node
+	currDB string
 }
 
 // Column defines database column

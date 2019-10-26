@@ -82,6 +82,7 @@ func TestSQLSmith_Walker(t *testing.T) {
 		},
 	}
 
+	ss.SetDB("community")
 	sql, err :=	ss.Walk(&node)
 
 	if err != nil {

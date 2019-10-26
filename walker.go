@@ -46,7 +46,11 @@ func (s *SQLSmith) walkSelectStmt(node *ast.SelectStmt) *Table {
 	} else if node.From.TableRefs.Right != nil && node.From.TableRefs.Left != nil {
 		// from schemaA join schemaB
 		lTable := s.walkResultSetNode(node.From.TableRefs.Left)
+		
 		rTable := s.walkResultSetNode(node.From.TableRefs.Right)
+		for rTable.Table == lTable.Table {
+			rTable = s.walkResultSetNode(node.From.TableRefs.Right)
+		}
 		
 		table, onColumns := s.mergeTable(lTable, rTable)
 		s.walkSelectStmtColumns(node, table)

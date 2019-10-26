@@ -16,10 +16,15 @@ func New() *SQLSmith {
 	}
 }
 
+// SetDB set currerent database
+func (s *SQLSmith) SetDB(db string) {
+	s.currDB = db
+}
+
 // SelectStmt make random select statement
 func (s *SQLSmith) SelectStmt(depth int) ast.Node {
-	s.depth = depth
-	s.maxDepth = 1
+	s.depth = 1
+	s.maxDepth = depth
 	return s.selectStmt(1)
 }
 
