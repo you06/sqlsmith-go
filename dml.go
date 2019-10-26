@@ -24,6 +24,8 @@ func (s *SQLSmith) constructSelectStmt(pNode ast.Node, depth int) (cNode ast.Nod
 	_ = rand.Intn(100)
 	switch pNode.(type) {
 	case nil:
+		sstmt := &ast.SelectStmt{}
+		s.Node = sstmt
 		return s.constructSelectStmt(nil, depth - 1)
 	case *ast.SelectStmt:
 		return s.constructSelectStmt(nil, depth - 1)
