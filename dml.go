@@ -45,12 +45,14 @@ func (s *SQLSmith) constructSelectStmt(pNode ast.Node, depth int) (cNode ast.Nod
 	case *ast.SelectStmt:
 	case *ast.TableRefsClause:
 	case ast.ExprNode:
-	case *ast.FieldList:
 	case *ast.GroupByClause:
 	case *ast.HavingClause:
 	case *ast.WindowSpec:
 	case *ast.OrderByClause:
 	case *ast.Limit:
+	case *ast.Join:
+	case ast.ResultSetNode:
+	case *ast.OnCondition:
 	default:
 		return pNode
 	}
