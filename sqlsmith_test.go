@@ -40,10 +40,10 @@ func TestSQLSmith_ToSQL(t *testing.T) {
 	node := ss.SelectStmt(3)
 	t.Log(node)
 
-	// sql, err :=	ss.Walk(node)
+	sql, err :=	ss.Walk(node)
 
-	// if err != nil {
-	// 	t.Fatalf("walk error %v", err)
-	// }
-	// t.Log(sql)
+	if err != nil {
+		t.Fatalf("walk error %v", err)
+	}
+	t.Log(sql)
 }

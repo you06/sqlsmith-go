@@ -10,7 +10,11 @@ func (s *SQLSmith) selectStmt(depth int) ast.Node {
 		s.depth = depth
 	}
 
-	selectStmtNode := ast.SelectStmt{}
+	selectStmtNode := ast.SelectStmt{
+		SelectStmtOpts: &ast.SelectStmtOpts{
+			SQLCache: true,
+		},
+	}
 
 	if s.depth < s.maxDepth {
 		if s.rd(100) > 50 {
