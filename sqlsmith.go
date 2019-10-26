@@ -2,7 +2,6 @@ package sqlsmith
 
 import (
 	"math/rand"
-	"sync"
 	"time"
 
 	"github.com/pingcap/parser/ast"
@@ -28,20 +27,14 @@ func (s *SQLSmith) BatchGenSQL(n int) []string {
 	rand.Seed(time.Now().Unix())
 	var (
 		result = make([]string, n)
-		wg     = sync.WaitGroup{}
 	)
 	for i := 0; i < n; i++ {
-		wg.Add(1)
-		go func(idx int) {
-			defer wg.Done()
-			_ = s.constructSelectStmt(nil, rand.Intn(10) + 5)
-			s, err := s.ToSQL()
-			if err != nil {
-				return
-			}
-			result[i] = s
-		}(i)
+		_ = s.constructSelectStmt(nil, rand.Intn(10)+5)
+		s, err := s.ToSQL()
+		if err != nil {
+			continue
+		}
+		result[i] = s
 	}
-	wg.Wait()
 	return result
 }
