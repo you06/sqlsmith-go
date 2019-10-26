@@ -1,6 +1,7 @@
 package sqlsmith
 
 import (
+	"github.com/pingcap/parser"
 	"math/rand"
 	"time"
 
@@ -25,6 +26,8 @@ func (s *SQLSmith) BatchGenSQL(n int) []string {
 		return []string{}
 	}
 	rand.Seed(time.Now().Unix())
+	p := parser.New()
+	p.Parse()
 	var (
 		result = make([]string, n)
 	)

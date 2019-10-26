@@ -86,7 +86,7 @@ func (s *SQLSmith) constructSelectStmt(pNode ast.Node, depth int) (cNode ast.Nod
 	case *ast.WindowSpec:
 		var nextNode ast.Node
 		if r>10{
-			nextNode = ast.ExprNode(nil),
+			nextNode = ast.ExprNode(nil)
 		}
 		return s.constructSelectStmt(nextNode, depth-1)
 	case *ast.OrderByClause:
