@@ -5,27 +5,34 @@ import (
 	"math/rand"
 )
 
+// SQLSmith defines SQLSmith struct
 type SQLSmith struct {
 	depth int
 	Rand *rand.Rand
 	Databases map[string]*Database
+	subTableIndex int
 	Node ast.Node
 }
 
+// Column defines database column
 type Column struct {
 	DB string
 	Table string
 	Column string
+	OriginColumn string
 	DataType string
 }
 
+// Table defines database table
 type Table struct {
 	DB string
 	Table string
+	OriginTable string
 	Type string
 	Columns map[string]*Column
 }
 
+// Database defines database database
 type Database struct {
 	Name string
 	Tables map[string]*Table
