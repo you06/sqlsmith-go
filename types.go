@@ -23,6 +23,7 @@ type Column struct {
 	Column string
 	OriginColumn string
 	DataType string
+	Func bool
 }
 
 // Table defines database table

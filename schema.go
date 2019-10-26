@@ -47,7 +47,7 @@ func (s *SQLSmith) LoadSchema (records [][5]string) {
 	}
 }
 
-func (s *SQLSmith) randTableFromTable(table *Table, newName bool) (*Table) {
+func (s *SQLSmith) randTableFromTable(table *Table, newName bool, fn bool) (*Table) {
 	newTableName := ""
 	if newName {
 		newTableName = s.getSubTableName()
@@ -72,16 +72,29 @@ func (s *SQLSmith) randTableFromTable(table *Table, newName bool) (*Table) {
 		}
 		newTable.Columns[column.Column] = column
 	}
+	if fn {
+		r := s.rd(4)
+		for i := 0; i < r; i++ {
+			k := fmt.Sprintf("f%d", i)
+			newTable.Columns[k] = &Column{
+				DB: newTable.DB,
+				Table: newTable.Table,
+				Column: k,
+				DataType: "func",
+				Func: true,
+			}	
+		}
+	}
 	return &newTable
 }
 
-func (s *SQLSmith) randTable(newName bool) (*Table) {
+func (s *SQLSmith) randTable(newName bool, fn bool) (*Table) {
 	tables := s.Databases[s.currDB].Tables
 	index := 0
 	k := s.rd(len(tables))
 	for _, table := range tables {
 		if index == k {
-			return s.randTableFromTable(table, newName)
+			return s.randTableFromTable(table, newName, fn)
 		}
 		index++
 	}

@@ -36,7 +36,7 @@ func (s *SQLSmith) walkSelectStmt(node *ast.SelectStmt) *Table {
 		switch node.From.TableRefs.Left.(type) {
 		case *ast.TableName:
 			// from schema.table
-			table := s.randTable(false)
+			table := s.randTable(false, true)
 			s.walkSelectStmtColumns(node, table)
 			if node, ok := node.From.TableRefs.Left.(*ast.TableName); ok {
 				node.Name = model.NewCIStr(table.Table)
@@ -73,7 +73,7 @@ func (s *SQLSmith) walkResultSetNode(node ast.ResultSetNode) *Table {
 	switch node := node.(type) {
 	case *ast.TableName:
 		// from schema.table
-		table := s.randTable(false)
+		table := s.randTable(false, false)
 		if table.OriginTable == "" {
 			node.Name = model.NewCIStr(table.Table)
 		} else {
@@ -98,28 +98,36 @@ func (s *SQLSmith) walkResultSetNode(node ast.ResultSetNode) *Table {
 
 func (s *SQLSmith) walkSelectStmtColumns(node *ast.SelectStmt, table *Table) {
 	for _, column := range table.Columns {
-		var selectField ast.SelectField
-		if column.OriginColumn == "" {
-			selectField =	ast.SelectField{
-				Expr: &ast.ColumnNameExpr{
-					Name: &ast.ColumnName{
-						Table: model.NewCIStr(column.Table),
-						Name: model.NewCIStr(column.Column),
+		log.Println(column.Table, column.Column)
+		if !column.Func {
+			var selectField ast.SelectField
+			if column.OriginColumn == "" {
+				selectField =	ast.SelectField{
+					Expr: &ast.ColumnNameExpr{
+						Name: &ast.ColumnName{
+							Table: model.NewCIStr(column.Table),
+							Name: model.NewCIStr(column.Column),
+						},
 					},
-				},
+				}
+			} else {
+				selectField =	ast.SelectField{
+					AsName: model.NewCIStr(column.Column),
+					Expr: &ast.ColumnNameExpr{
+						Name: &ast.ColumnName{
+							Table: model.NewCIStr(column.Table),
+							Name: model.NewCIStr(column.OriginColumn),
+						},
+					},
+				}
 			}
+			node.Fields.Fields = append(node.Fields.Fields, &selectField)
 		} else {
-			selectField =	ast.SelectField{
+			node.Fields.Fields = append(node.Fields.Fields, &ast.SelectField{
+				Expr: s.generateFuncCallExpr(table, s.rd(4)),
 				AsName: model.NewCIStr(column.Column),
-				Expr: &ast.ColumnNameExpr{
-					Name: &ast.ColumnName{
-						Table: model.NewCIStr(column.Table),
-						Name: model.NewCIStr(column.OriginColumn),
-					},
-				},
-			}
+			})
 		}
-		node.Fields.Fields = append(node.Fields.Fields, &selectField)
 	}
 }
 
