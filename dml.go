@@ -21,7 +21,7 @@ func (s *SQLSmith) constructSelectStmt(pNode ast.Node, depth int) (cNode ast.Nod
 		return pNode
 	}
 	rand.Seed(time.Now().UnixNano())
-	r := rand.Intn(100)
+	_ = rand.Intn(100)
 	switch pNode.(type) {
 	case nil:
 		return s.constructSelectStmt(nil, depth - 1)
