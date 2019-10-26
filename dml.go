@@ -24,33 +24,119 @@ func (s *SQLSmith) constructSelectStmt(pNode ast.Node, depth int) (cNode ast.Nod
 		return pNode
 	}
 	rand.Seed(time.Now().UnixNano())
-	_ = rand.Intn(100)
+	r := rand.Intn(100)
 	switch pNode.(type) {
 	case nil:
 		sstmt := &ast.SelectStmt{}
 		s.Node = sstmt
+		if r>10{
+			sstmt.Distinct = true
+		}
+		if r>20{
+
+		}
+		if r>30{
+
+		}
 		return s.constructSelectStmt(nil, depth-1)
 	case *ast.SelectStmt:
+		var nextNode ast.Node
+		if r>10{
+			_ = nextNode
+		}
+		if r>20{
+			_ = nextNode
+		}
 		return s.constructSelectStmt(nil, depth-1)
 	case *ast.TableRefsClause:
+		var nextNode ast.Node
+		if r>10{
+			_ = nextNode
+		}
+		if r>20{
+			_ = nextNode
+		}
 		return s.constructSelectStmt(nil, depth-1)
 	case ast.ExprNode:
+		var nextNode ast.Node
+		if r>10{
+			_ = nextNode
+		}
+		if r>20{
+			_ = nextNode
+		}
 		return s.constructSelectStmt(nil, depth-1)
 	case *ast.GroupByClause:
+		var nextNode ast.Node
+		if r>10{
+			_ = nextNode
+		}
+		if r>20{
+			_ = nextNode
+		}
 		return s.constructSelectStmt(nil, depth-1)
 	case *ast.HavingClause:
+		var nextNode ast.Node
+		if r>10{
+			_ = nextNode
+		}
+		if r>20{
+			_ = nextNode
+		}
 		return s.constructSelectStmt(nil, depth-1)
 	case *ast.WindowSpec:
+		var nextNode ast.Node
+		if r>10{
+			_ = nextNode
+		}
+		if r>20{
+			_ = nextNode
+		}
 		return s.constructSelectStmt(nil, depth-1)
 	case *ast.OrderByClause:
+		var nextNode ast.Node
+		if r>10{
+			_ = nextNode
+		}
+		if r>20{
+			_ = nextNode
+		}
 		return s.constructSelectStmt(nil, depth-1)
 	case *ast.Limit:
+		var nextNode ast.Node
+		if r>10{
+			_ = nextNode
+		}
+		if r>20{
+			_ = nextNode
+		}
 		return s.constructSelectStmt(nil, depth-1)
 	case *ast.Join:
+		var nextNode ast.Node
+		if r>10{
+			_ = nextNode
+		}
+		if r>20{
+			_ = nextNode
+		}
 		return s.constructSelectStmt(nil, depth-1)
 	case ast.ResultSetNode:
+		var nextNode ast.Node
+		if r>10{
+			_ = nextNode
+		}
+		if r>20{
+			_ = nextNode
+		}
 		return s.constructSelectStmt(nil, depth-1)
 	case *ast.OnCondition:
+		var nextNode ast.Node
+		if r>10{
+			_ = nextNode
+		}
+		if r>20{
+			_ = nextNode
+		}
 		return s.constructSelectStmt(nil, depth-1)
 	default:
 		return pNode
