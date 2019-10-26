@@ -9,6 +9,7 @@ import (
 func New() *SQLSmith {
 	return &SQLSmith{
 		Rand: rand.New(rand.NewSource(time.Now().UnixNano())),
+		Databases: make(map[string]*Database),
 	}
 }
 
