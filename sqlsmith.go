@@ -1,5 +1,19 @@
 package sqlsmith
 
-func New() {
+import (
+	"github.com/pingcap/parser/ast"
+	"math/rand"
+	"time"
+)
 
+func New() *SQLSmith {
+	return &SQLSmith{
+		Rand: rand.New(rand.NewSource(time.Now().UnixNano())),
+	}
+}
+
+// SelectStmt make random select statement
+func (s *SQLSmith) SelectStmt (depth int) ast.Node {
+	s.depth = depth
+	return s.selectStmt(1)
 }
