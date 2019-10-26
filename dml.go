@@ -2,6 +2,7 @@ package sqlsmith
 
 import (
 	"bytes"
+	"github.com/pingcap/parser/model"
 	"math/rand"
 	"time"
 
@@ -19,9 +20,6 @@ func (s *SQLSmith) selectStmt(depth int) ast.Node {
 	return &selectStmtNode
 }
 
-func (s *SQLSmith) FindJoinablePair() ([2]string) {
-	// TODO
-}
 
 func (s *SQLSmith) constructSelectStmt(pNode ast.Node, depth int) (cNode ast.Node) {
 	if depth <= 0 {
@@ -59,85 +57,54 @@ func (s *SQLSmith) constructSelectStmt(pNode ast.Node, depth int) (cNode ast.Nod
 	case *ast.SelectStmt:
 		var nextNode ast.Node
 		if r>10{
-			_ = nextNode
+			nextNode = &ast.WindowSpec{
+				Name: model.NewCIStr(""),
+				Ref: model.NewCIStr(""),
+				OrderBy:&ast.OrderByClause{
+					Items: nil,
+				},
+				Frame:&ast.FrameClause{},
+			}
 		}
-		if r>20{
-			_ = nextNode
-		}
+
 		return s.constructSelectStmt(nextNode, depth-1)
 	case *ast.TableRefsClause:
 		var nextNode ast.Node
 		if r>10{
-			_ = nextNode
+			nextNode = nil
 		}
-		if r>20{
-			_ = nextNode
-		}
-		return s.constructSelectStmt(nextNode, depth-1)
-	case ast.ExprNode:
-		var nextNode ast.Node
-		if r>10{
-			_ = nextNode
-		}
-		if r>20{
-			_ = nextNode
-		}
+
 		return s.constructSelectStmt(nextNode, depth-1)
 	case *ast.GroupByClause:
 		var nextNode ast.Node
 		if r>10{
-			_ = nextNode
-		}
-		if r>20{
-			_ = nextNode
-		}
-		return s.constructSelectStmt(nextNode, depth-1)
-	case *ast.HavingClause:
-		var nextNode ast.Node
-		if r>10{
-			_ = nextNode
-		}
-		if r>20{
-			_ = nextNode
+			nextNode = &ast.HavingClause{
+				Expr:ast.ExprNode(nil),
+			}
 		}
 		return s.constructSelectStmt(nextNode, depth-1)
 	case *ast.WindowSpec:
 		var nextNode ast.Node
 		if r>10{
-			_ = nextNode
-		}
-		if r>20{
-			_ = nextNode
+			nextNode = ast.ExprNode(nil),
 		}
 		return s.constructSelectStmt(nextNode, depth-1)
 	case *ast.OrderByClause:
 		var nextNode ast.Node
 		if r>10{
-			_ = nextNode
-		}
-		if r>20{
-			_ = nextNode
+			nextNode = &ast.Limit{
+				Count:nil,
+				Offset:nil,
+			}
 		}
 		return s.constructSelectStmt(nextNode, depth-1)
 	case *ast.Limit:
 		var nextNode ast.Node
 		if r>10{
-			_ = nextNode
-		}
-		if r>20{
-			_ = nextNode
+			nextNode = nil
 		}
 		return s.constructSelectStmt(nextNode, depth-1)
 	case *ast.Join:
-		var nextNode ast.Node
-		if r>10{
-			_ = nextNode
-		}
-		if r>20{
-			_ = nextNode
-		}
-		return s.constructSelectStmt(nextNode, depth-1)
-	case ast.ResultSetNode:
 		var nextNode ast.Node
 		if r>10{
 			_ = nextNode
