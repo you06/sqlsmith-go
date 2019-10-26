@@ -19,6 +19,10 @@ func (s *SQLSmith) selectStmt(depth int) ast.Node {
 	return &selectStmtNode
 }
 
+func (s *SQLSmith) FindJoinablePair() ([2]string) {
+	// TODO
+}
+
 func (s *SQLSmith) constructSelectStmt(pNode ast.Node, depth int) (cNode ast.Node) {
 	if depth <= 0 {
 		return pNode
@@ -33,12 +37,25 @@ func (s *SQLSmith) constructSelectStmt(pNode ast.Node, depth int) (cNode ast.Nod
 			sstmt.Distinct = true
 		}
 		if r>20{
-
+			sstmt.From = &ast.TableRefsClause{
+				TableRefs:&ast.Join{
+					Left:  nil, // Field
+					Right: nil, // Field
+					Tp:ast.CrossJoin,
+					On: nil,
+					Using: nil, // Field
+				},
+			}
 		}
 		if r>30{
-
+			sstmt.OrderBy = &ast.OrderByClause{
+				Items: nil, // Field
+			}
 		}
-		return s.constructSelectStmt(nil, depth-1)
+		if r>40{
+			sstmt.Fields = nil // Field
+		}
+		return s.constructSelectStmt(sstmt, depth-1)
 	case *ast.SelectStmt:
 		var nextNode ast.Node
 		if r>10{
@@ -47,7 +64,7 @@ func (s *SQLSmith) constructSelectStmt(pNode ast.Node, depth int) (cNode ast.Nod
 		if r>20{
 			_ = nextNode
 		}
-		return s.constructSelectStmt(nil, depth-1)
+		return s.constructSelectStmt(nextNode, depth-1)
 	case *ast.TableRefsClause:
 		var nextNode ast.Node
 		if r>10{
@@ -56,7 +73,7 @@ func (s *SQLSmith) constructSelectStmt(pNode ast.Node, depth int) (cNode ast.Nod
 		if r>20{
 			_ = nextNode
 		}
-		return s.constructSelectStmt(nil, depth-1)
+		return s.constructSelectStmt(nextNode, depth-1)
 	case ast.ExprNode:
 		var nextNode ast.Node
 		if r>10{
@@ -65,7 +82,7 @@ func (s *SQLSmith) constructSelectStmt(pNode ast.Node, depth int) (cNode ast.Nod
 		if r>20{
 			_ = nextNode
 		}
-		return s.constructSelectStmt(nil, depth-1)
+		return s.constructSelectStmt(nextNode, depth-1)
 	case *ast.GroupByClause:
 		var nextNode ast.Node
 		if r>10{
@@ -74,7 +91,7 @@ func (s *SQLSmith) constructSelectStmt(pNode ast.Node, depth int) (cNode ast.Nod
 		if r>20{
 			_ = nextNode
 		}
-		return s.constructSelectStmt(nil, depth-1)
+		return s.constructSelectStmt(nextNode, depth-1)
 	case *ast.HavingClause:
 		var nextNode ast.Node
 		if r>10{
@@ -83,7 +100,7 @@ func (s *SQLSmith) constructSelectStmt(pNode ast.Node, depth int) (cNode ast.Nod
 		if r>20{
 			_ = nextNode
 		}
-		return s.constructSelectStmt(nil, depth-1)
+		return s.constructSelectStmt(nextNode, depth-1)
 	case *ast.WindowSpec:
 		var nextNode ast.Node
 		if r>10{
@@ -92,7 +109,7 @@ func (s *SQLSmith) constructSelectStmt(pNode ast.Node, depth int) (cNode ast.Nod
 		if r>20{
 			_ = nextNode
 		}
-		return s.constructSelectStmt(nil, depth-1)
+		return s.constructSelectStmt(nextNode, depth-1)
 	case *ast.OrderByClause:
 		var nextNode ast.Node
 		if r>10{
@@ -101,7 +118,7 @@ func (s *SQLSmith) constructSelectStmt(pNode ast.Node, depth int) (cNode ast.Nod
 		if r>20{
 			_ = nextNode
 		}
-		return s.constructSelectStmt(nil, depth-1)
+		return s.constructSelectStmt(nextNode, depth-1)
 	case *ast.Limit:
 		var nextNode ast.Node
 		if r>10{
@@ -110,7 +127,7 @@ func (s *SQLSmith) constructSelectStmt(pNode ast.Node, depth int) (cNode ast.Nod
 		if r>20{
 			_ = nextNode
 		}
-		return s.constructSelectStmt(nil, depth-1)
+		return s.constructSelectStmt(nextNode, depth-1)
 	case *ast.Join:
 		var nextNode ast.Node
 		if r>10{
@@ -119,7 +136,7 @@ func (s *SQLSmith) constructSelectStmt(pNode ast.Node, depth int) (cNode ast.Nod
 		if r>20{
 			_ = nextNode
 		}
-		return s.constructSelectStmt(nil, depth-1)
+		return s.constructSelectStmt(nextNode, depth-1)
 	case ast.ResultSetNode:
 		var nextNode ast.Node
 		if r>10{
@@ -128,7 +145,7 @@ func (s *SQLSmith) constructSelectStmt(pNode ast.Node, depth int) (cNode ast.Nod
 		if r>20{
 			_ = nextNode
 		}
-		return s.constructSelectStmt(nil, depth-1)
+		return s.constructSelectStmt(nextNode, depth-1)
 	case *ast.OnCondition:
 		var nextNode ast.Node
 		if r>10{
@@ -137,7 +154,7 @@ func (s *SQLSmith) constructSelectStmt(pNode ast.Node, depth int) (cNode ast.Nod
 		if r>20{
 			_ = nextNode
 		}
-		return s.constructSelectStmt(nil, depth-1)
+		return s.constructSelectStmt(nextNode, depth-1)
 	default:
 		return pNode
 	}
