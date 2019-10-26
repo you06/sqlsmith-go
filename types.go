@@ -8,6 +8,7 @@ import (
 // SQLSmith defines SQLSmith struct
 type SQLSmith struct {
 	depth int
+	maxDepth int
 	Rand *rand.Rand
 	Databases map[string]*Database
 	subTableIndex int

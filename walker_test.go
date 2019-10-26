@@ -1,11 +1,9 @@
 package sqlsmith
 
 import (
-	"bytes"
 	"testing"
 
 	"github.com/pingcap/parser/ast"
-	"github.com/pingcap/parser/format"
 	"github.com/pingcap/parser/opcode"
 )
 
@@ -84,11 +82,10 @@ func TestSQLSmith_Walker(t *testing.T) {
 		},
 	}
 
-	ss.Walk(&node)
+	sql, err :=	ss.Walk(&node)
 
-	stdout := new(bytes.Buffer)
-	node.Restore(format.NewRestoreCtx(format.RestoreStringDoubleQuotes, stdout))
-	
-	sql := string(stdout.Bytes())
+	if err != nil {
+		t.Fatalf("walk error %v", err)
+	}
 	t.Log(sql)
 }

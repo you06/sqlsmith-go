@@ -3,30 +3,16 @@ package sqlsmith
 import (
 	"bytes"
 	"github.com/pingcap/parser/model"
-	"math/rand"
-	"time"
 
 	"github.com/pingcap/parser/ast"
 	"github.com/pingcap/parser/format"
 )
 
-func (s *SQLSmith) selectStmt(depth int) ast.Node {
-	selectStmtNode := ast.SelectStmt{}
-
-	if s.rd(10) < 5 {
-		selectStmtNode.From = nil
-	}
-
-	return &selectStmtNode
-}
-
-
-func (s *SQLSmith) constructSelectStmt(pNode ast.Node, depth int) (cNode ast.Node) {
+func (s *SQLSmith) constructSelectStmt(pNode ast.Node, depth int) ast.Node {
 	if depth <= 0 {
 		return pNode
 	}
-	rand.Seed(time.Now().UnixNano())
-	r := rand.Intn(100)
+	r := s.rd(100)
 	switch pNode.(type) {
 	case nil:
 		sstmt := &ast.SelectStmt{}
@@ -127,6 +113,7 @@ func (s *SQLSmith) constructSelectStmt(pNode ast.Node, depth int) (cNode ast.Nod
 	}
 }
 
+// ToSQL translate AST to SQL string
 func (s *SQLSmith) ToSQL() (string, error) {
 	b := bytes.NewBuffer([]byte{})
 	err := s.Node.Restore(

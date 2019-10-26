@@ -1,14 +1,24 @@
 package sqlsmith
 
 import (
+	"bytes"
+	"log"
+
 	"github.com/pingcap/parser/ast"
 	"github.com/pingcap/parser/model"
-	"log"
+	"github.com/pingcap/parser/format"
 )
 
 // Walk will walk the tree and fillin tables and columns data
-func (s *SQLSmith) Walk(node ast.Node) {
+func (s *SQLSmith) Walk(node ast.Node) (string, error) {
 	_ = s.walk(node)
+	
+	out := new(bytes.Buffer)
+	err := node.Restore(format.NewRestoreCtx(format.RestoreStringDoubleQuotes, out))
+	if err != nil {
+		return "", err
+	}
+	return string(out.Bytes()), nil
 }
 
 func (s *SQLSmith) walk(node ast.Node) *Table {
@@ -60,7 +70,6 @@ func (s *SQLSmith) walkResultSetNode(node ast.ResultSetNode) *Table {
 	case *ast.TableName:
 		// from schema.table
 		table := s.randTable(false)
-		log.Println(table)
 		if table.OriginTable == "" {
 			node.Name = model.NewCIStr(table.Table)
 		} else {

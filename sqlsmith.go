@@ -8,6 +8,7 @@ import (
 	"github.com/pingcap/parser/ast"
 )
 
+// New create SQLSmith instance
 func New() *SQLSmith {
 	return &SQLSmith{
 		Rand:      rand.New(rand.NewSource(time.Now().UnixNano())),
@@ -18,9 +19,11 @@ func New() *SQLSmith {
 // SelectStmt make random select statement
 func (s *SQLSmith) SelectStmt(depth int) ast.Node {
 	s.depth = depth
+	s.maxDepth = 1
 	return s.selectStmt(1)
 }
 
+// BatchGenSQL generate SQLs in batch
 func (s *SQLSmith) BatchGenSQL(n int) []string {
 	if n <= 0 {
 		return []string{}
