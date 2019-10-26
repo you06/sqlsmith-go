@@ -1,11 +1,15 @@
 package sqlsmith
 
-import "math/rand"
+import (
+	"github.com/pingcap/parser/ast"
+	"math/rand"
+)
 
 type SQLSmith struct {
 	depth int
 	Rand *rand.Rand
 	Databases map[string]*Database
+	Node ast.Node
 }
 
 type Column struct {
