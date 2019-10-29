@@ -32,6 +32,6 @@ func gosmith() {
 	node := ss.SelectStmt(5)
 
 	// fill the tree with selected schema and get SQL string
-	sql, err :=	ss.Walk(node)
+	sql, err := ss.Walk(node)
 }
 ```
