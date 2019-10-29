@@ -114,9 +114,10 @@ func (s *SQLSmith) randColumns(table *Table) []*Column {
 }
 
 func (s *SQLSmith) mergeTable(table1 *Table, table2 *Table) (*Table, [2]*Column) {
+	subTableName := s.getSubTableName()
 	table := Table{
 		DB: table1.DB,
-		Table: s.getSubTableName(),
+		Table: subTableName,
 		Type: "SUB TABLE",
 		Columns: make(map[string]*Column),
 	}
@@ -127,7 +128,8 @@ func (s *SQLSmith) mergeTable(table1 *Table, table2 *Table) (*Table, [2]*Column)
 	for _, column := range table1.Columns {
 		table.Columns[fmt.Sprintf("c%d", index)] = &Column{
 			DB: column.DB,
-			Table: column.Table,
+			Table: subTableName,
+			OriginTable: column.Table,
 			DataType: column.DataType,
 			Column: fmt.Sprintf("c%d", index),
 			OriginColumn: column.Column,
@@ -137,7 +139,8 @@ func (s *SQLSmith) mergeTable(table1 *Table, table2 *Table) (*Table, [2]*Column)
 	for _, column := range table2.Columns {
 		table.Columns[fmt.Sprintf("c%d", index)] = &Column{
 			DB: column.DB,
-			Table: column.Table,
+			Table: subTableName,
+			OriginTable: column.Table,
 			DataType: column.DataType,
 			Column: fmt.Sprintf("c%d", index),
 			OriginColumn: column.Column,

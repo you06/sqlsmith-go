@@ -20,6 +20,7 @@ type SQLSmith struct {
 type Column struct {
 	DB string
 	Table string
+	OriginTable string
 	Column string
 	OriginColumn string
 	DataType string

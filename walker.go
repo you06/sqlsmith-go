@@ -51,10 +51,10 @@ func (s *SQLSmith) walkSelectStmt(node *ast.SelectStmt) *Table {
 		for rTable.Table == lTable.Table {
 			rTable = s.walkResultSetNode(node.From.TableRefs.Right)
 		}
-		
+
 		table, onColumns := s.mergeTable(lTable, rTable)
 		s.walkSelectStmtColumns(node, table)
-		
+
 		if node.From.TableRefs.On != nil {
 			if node, ok := node.From.TableRefs.On.Expr.(*ast.BinaryOperationExpr); ok {
 				s.walkExprNode(node.L, onColumns[0])
@@ -98,7 +98,7 @@ func (s *SQLSmith) walkResultSetNode(node ast.ResultSetNode) *Table {
 
 func (s *SQLSmith) walkSelectStmtColumns(node *ast.SelectStmt, table *Table) {
 	for _, column := range table.Columns {
-		log.Println(column.Table, column.Column)
+		// log.Println(column.Table, column.Column)
 		if !column.Func {
 			var selectField ast.SelectField
 			if column.OriginColumn == "" {
@@ -111,14 +111,26 @@ func (s *SQLSmith) walkSelectStmtColumns(node *ast.SelectStmt, table *Table) {
 					},
 				}
 			} else {
-				selectField =	ast.SelectField{
-					AsName: model.NewCIStr(column.Column),
-					Expr: &ast.ColumnNameExpr{
-						Name: &ast.ColumnName{
-							Table: model.NewCIStr(column.Table),
-							Name: model.NewCIStr(column.OriginColumn),
+				if column.OriginTable != "" {
+					selectField =	ast.SelectField{
+						AsName: model.NewCIStr(column.Column),
+						Expr: &ast.ColumnNameExpr{
+							Name: &ast.ColumnName{
+								Table: model.NewCIStr(column.OriginTable),
+								Name: model.NewCIStr(column.OriginColumn),
+							},
 						},
-					},
+					}
+				} else {
+					selectField =	ast.SelectField{
+						AsName: model.NewCIStr(column.Column),
+						Expr: &ast.ColumnNameExpr{
+							Name: &ast.ColumnName{
+								Table: model.NewCIStr(column.Table),
+								Name: model.NewCIStr(column.OriginColumn),
+							},
+						},
+					}
 				}
 			}
 			node.Fields.Fields = append(node.Fields.Fields, &selectField)
@@ -133,9 +145,16 @@ func (s *SQLSmith) walkSelectStmtColumns(node *ast.SelectStmt, table *Table) {
 
 func (s *SQLSmith) walkExprNode(node ast.ExprNode, column *Column) {
 	if node, ok := node.(*ast.ColumnNameExpr); ok {
-		node.Name = &ast.ColumnName{
-			Table: model.NewCIStr(column.Table),
-			Name: model.NewCIStr(column.Column),
+		if column.OriginTable != "" {
+			node.Name = &ast.ColumnName{
+				Table: model.NewCIStr(column.OriginTable),
+				Name: model.NewCIStr(column.Column),
+			}
+		} else {
+			node.Name = &ast.ColumnName{
+				Table: model.NewCIStr(column.Table),
+				Name: model.NewCIStr(column.Column),
+			}
 		}
 	}
 }

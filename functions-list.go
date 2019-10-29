@@ -202,9 +202,9 @@ var funcs = map[string]*functionClass{
 	ast.IsUsedLock:      &functionClass{ast.IsUsedLock, 1, 1},
 	ast.MasterPosWait:   &functionClass{ast.MasterPosWait, 2, 4},
 	ast.NameConst:       &functionClass{ast.NameConst, 2, 2},
-	ast.ReleaseAllLocks: &functionClass{ast.ReleaseAllLocks, 0, 0},
+	// ast.ReleaseAllLocks: &functionClass{ast.ReleaseAllLocks, 0, 0},
 	ast.UUID:            &functionClass{ast.UUID, 0, 0},
-	ast.UUIDShort:       &functionClass{ast.UUIDShort, 0, 0},
+	// ast.UUIDShort:       &functionClass{ast.UUIDShort, 0, 0},
 
 	// encryption and compression functions
 	ast.AesDecrypt:               &functionClass{ast.AesDecrypt, 2, 3},
