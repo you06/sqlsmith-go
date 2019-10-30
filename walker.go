@@ -39,6 +39,7 @@ func (s *SQLSmith) walkSelectStmt(node *ast.SelectStmt) *Table {
 			table := s.randTable(false, true)
 			s.walkSelectStmtColumns(node, table, false)
 			if node, ok := node.From.TableRefs.Left.(*ast.TableName); ok {
+				node.Schema = model.NewCIStr(table.DB)
 				node.Name = model.NewCIStr(table.Table)
 			}
 			return table
@@ -109,7 +110,6 @@ func (s *SQLSmith) walkSelectStmtColumns(node *ast.SelectStmt, table *Table, joi
 				selectField =	ast.SelectField{
 					Expr: &ast.ColumnNameExpr{
 						Name: &ast.ColumnName{
-							Schema: model.NewCIStr(column.DB),
 							Table: model.NewCIStr(column.Table),
 							Name: model.NewCIStr(column.Column),
 						},
