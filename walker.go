@@ -109,6 +109,7 @@ func (s *SQLSmith) walkSelectStmtColumns(node *ast.SelectStmt, table *Table, joi
 				selectField =	ast.SelectField{
 					Expr: &ast.ColumnNameExpr{
 						Name: &ast.ColumnName{
+							Schema: model.NewCIStr(column.DB),
 							Table: model.NewCIStr(column.Table),
 							Name: model.NewCIStr(column.Column),
 						},
