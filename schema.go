@@ -65,12 +65,21 @@ func (s *SQLSmith) randTableFromTable(table *Table, newName bool, fn bool) (*Tab
 		newTable.Table = table.Table
 	}
 	for _, column := range columns {
-		if newName {
-			column.Table = newTableName
-		} else {
-			column.Table = table.Table
+		newColumn := &Column{
+			DB: column.DB,
+			Table: column.Table,
+			OriginTable: column.OriginTable,
+			Column: column.Column,
+			OriginColumn: column.OriginColumn,
+			DataType: column.DataType,
+			Func: column.Func,
 		}
-		newTable.Columns[column.Column] = column
+		if newName {
+			newColumn.Table = newTableName
+		} else {
+			newColumn.Table = table.Table
+		}
+		newTable.Columns[newColumn.Column] = newColumn
 	}
 	if fn {
 		r := s.rd(4)
