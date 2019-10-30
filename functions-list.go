@@ -152,7 +152,7 @@ var funcs = map[string]*functionClass{
 	ast.Substr:          &functionClass{ast.Substr, 2, 3},
 	ast.SubstringIndex:  &functionClass{ast.SubstringIndex, 3, 3},
 	ast.ToBase64:        &functionClass{ast.ToBase64, 1, 1},
-	ast.Trim:            &functionClass{ast.Trim, 1, 3},
+	// ast.Trim:            &functionClass{ast.Trim, 1, 3},
 	ast.Upper:           &functionClass{ast.Upper, 1, 1},
 	ast.Ucase:           &functionClass{ast.Ucase, 1, 1},
 	ast.Hex:             &functionClass{ast.Hex, 1, 1},

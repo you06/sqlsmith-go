@@ -56,9 +56,13 @@ func (s *SQLSmith) walkSelectStmt(node *ast.SelectStmt) *Table {
 		s.walkSelectStmtColumns(node, table)
 
 		if node.From.TableRefs.On != nil {
-			if node, ok := node.From.TableRefs.On.Expr.(*ast.BinaryOperationExpr); ok {
-				s.walkExprNode(node.L, onColumns[0])
-				s.walkExprNode(node.R, onColumns[1])
+			if onColumns[0] == nil || onColumns[1] == nil {
+				node.From.TableRefs.On = nil
+			} else {
+				if node, ok := node.From.TableRefs.On.Expr.(*ast.BinaryOperationExpr); ok {
+					s.walkExprNode(node.L, onColumns[0])
+					s.walkExprNode(node.R, onColumns[1])
+				}
 			}
 		}
 		return table
@@ -145,16 +149,20 @@ func (s *SQLSmith) walkSelectStmtColumns(node *ast.SelectStmt, table *Table) {
 
 func (s *SQLSmith) walkExprNode(node ast.ExprNode, column *Column) {
 	if node, ok := node.(*ast.ColumnNameExpr); ok {
-		if column.OriginTable != "" {
-			node.Name = &ast.ColumnName{
-				Table: model.NewCIStr(column.OriginTable),
-				Name: model.NewCIStr(column.Column),
-			}
-		} else {
-			node.Name = &ast.ColumnName{
-				Table: model.NewCIStr(column.Table),
-				Name: model.NewCIStr(column.Column),
-			}
+		node.Name = &ast.ColumnName{
+			Table: model.NewCIStr(column.Table),
+			Name: model.NewCIStr(column.Column),
 		}
+		// if column.OriginTable != "" {
+		// 	node.Name = &ast.ColumnName{
+		// 		Table: model.NewCIStr(column.OriginTable),
+		// 		Name: model.NewCIStr(column.Column),
+		// 	}
+		// } else {
+		// 	node.Name = &ast.ColumnName{
+		// 		Table: model.NewCIStr(column.Table),
+		// 		Name: model.NewCIStr(column.Column),
+		// 	}
+		// }
 	}
 }
