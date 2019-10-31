@@ -8,7 +8,7 @@ import (
 
 // BatchData generate testing data by schema in given batch
 // return SQLs with insert statement
-func (s *SQLSmith) BatchData(batchSize int, total int) ([]string, error) {
+func (s *SQLSmith) BatchData(total, batchSize int) ([]string, error) {
 	if s.currDB == "" {
 		return []string{}, errors.New("no selected database")
 	}

@@ -69,7 +69,7 @@ func TestSQLSmith_GenData(t *testing.T) {
 	}
 	ss.LoadSchema(schema)
 	ss.SetDB("community")
-	sqls, _ := ss.BatchData(1, 2)
+	sqls, _ := ss.BatchData(2, 1)
 	for _, sql := range sqls {
 		t.Log(sql)
 	}
