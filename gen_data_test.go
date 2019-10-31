@@ -2,7 +2,7 @@ package sqlsmith
 
 import "testing"
 
-func TestSQLSmith_ToSQL(t *testing.T) {
+func TestSQLSmith_GenData(t *testing.T) {
 	ss := New()
 	schema := [][5]string{
 		{"community", "comments", "BASE TABLE", "id", "int(11)"},
@@ -68,23 +68,10 @@ func TestSQLSmith_ToSQL(t *testing.T) {
 		{"community", "users", "BASE TABLE", "team_id", "int(11)"},
 	}
 	ss.LoadSchema(schema)
-	// resultSet := ss.BatchGenSQL(1)
-	// for _,v:=range resultSet{
-	// 	t.Log(v)
-	// }
-	node := ss.SelectStmt(10)
-
 	ss.SetDB("community")
-	sql, err :=	ss.Walk(node)
-
-	for i := 0; i < 1; i++ {
-		t.Log(i, ss.rdRange(1, 5))
-		node := ss.SelectStmt(ss.rdRange(1, 600))
-		_, _ =	ss.Walk(node)
+	sqls, _ := ss.BatchData(1, 2)
+	for _, sql := range sqls {
+		t.Log(sql)
 	}
-
-	if err != nil {
-		t.Fatalf("walk error %v", err)
-	}
-	t.Log(sql)
+	// t.Log("rd string", ss.randString(ss.rd(100)))
 }

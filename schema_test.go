@@ -8,13 +8,13 @@ import (
 func TestSQLSmith_Schema_TableMerge(t *testing.T) {
 	ss := New()
 	ss.LoadSchema([][5]string{
-		[5]string{"test", "balances", "BASE TABLE", "id", "int(11)"},
-		[5]string{"test", "balances", "BASE TABLE", "user", "varchar(255)"},
-		[5]string{"test", "balances", "BASE TABLE", "money", "int(11)"},
-		[5]string{"test", "records", "BASE TABLE", "id", "int(11)"},
-		[5]string{"test", "records", "BASE TABLE", "from_id", "int(11)"},
-		[5]string{"test", "records", "BASE TABLE", "to_id", "int(11)"},
-		[5]string{"test", "records", "BASE TABLE", "created_at", "timestamp"},
+		{"test", "balances", "BASE TABLE", "id", "int(11)"},
+		{"test", "balances", "BASE TABLE", "user", "varchar(255)"},
+		{"test", "balances", "BASE TABLE", "money", "int(11)"},
+		{"test", "records", "BASE TABLE", "id", "int(11)"},
+		{"test", "records", "BASE TABLE", "from_id", "int(11)"},
+		{"test", "records", "BASE TABLE", "to_id", "int(11)"},
+		{"test", "records", "BASE TABLE", "created_at", "timestamp"},
 	})
 	
 	table, onColumns := ss.mergeTable(ss.Databases["test"].Tables["balances"], ss.Databases["test"].Tables["records"])
