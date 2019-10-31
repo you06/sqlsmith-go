@@ -20,11 +20,15 @@ func (s *SQLSmith) BatchData(total, batchSize int) ([]string, error) {
 	var sqls []string
 	for _, table := range database.Tables {
 		var columns []*Column
-		var lines [][]string
-		count := 0
 		for _, column := range table.Columns {
+			if column.Column == "id" {
+				continue
+			}
 			columns = append(columns, column)
 		}
+
+		var lines [][]string
+		count := 0
 		for i := 0; i < total; i++ {
 			var line []string
 			for _, column := range columns {
@@ -35,7 +39,7 @@ func (s *SQLSmith) BatchData(total, batchSize int) ([]string, error) {
 			if count >= batchSize {
 				count = 0
 				sqls = append(sqls, makeSQL(table, columns, lines))
-				columns = []*Column{}
+				lines = [][]string{}
 			}
 		}
 		if len(lines) != 0 {
@@ -48,9 +52,6 @@ func (s *SQLSmith) BatchData(total, batchSize int) ([]string, error) {
 func makeSQL(table *Table, columns []*Column, lines [][]string) string {
 	var columnNames []string
 	for _, column := range columns {
-		if column.Column == "id" {
-			continue
-		}
 		columnNames = append(columnNames, fmt.Sprintf("`%s`", column.Column))
 	}
 	return fmt.Sprintf("INSERT INTO `%s` (%s) VALUES \n %s",
@@ -96,5 +97,5 @@ func (s *SQLSmith) generateFloatItem() string {
 }
 
 func (s *SQLSmith) generateDateItem() string {
-	return fmt.Sprintf("\"%s\"", s.rdDate().Format("2006-1-2 15:04:05"))
+	return fmt.Sprintf("\"%s\"", s.rdDate().Format("2006-01-02 15:04:05"))
 }

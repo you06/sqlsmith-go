@@ -40,8 +40,11 @@ func (s *SQLSmith) rdString (length int) string {
 	for i := 0; i < length; i++ {
 		charCode := s.rdRange(33, 127)
 		// 66 stands for the char ", which will make SQL error
-		if charCode == 66 {
+		if charCode == 34 {
 			charCode++
+		}
+		if string(rune(charCode)) == "" {
+			fmt.Println(charCode)
 		}
 		res = fmt.Sprintf("%s%s", res, string(rune(charCode)))
 	}
