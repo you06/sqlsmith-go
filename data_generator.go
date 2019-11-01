@@ -1,5 +1,6 @@
 package sqlsmith
 
+import "errors"
 
 // DataGenerator defines data generator
 type DataGenerator struct {
@@ -10,13 +11,20 @@ type DataGenerator struct {
 }
 
 // GenData returns data generator
-func (s *SQLSmith) GenData(total, batch int) *DataGenerator {
+func (s *SQLSmith) GenData(total, batch int) (*DataGenerator, error) {
+	if s.currDB == "" {
+		return nil, errors.New("no selected database")
+	}
+	_, ok := s.Databases[s.currDB]
+	if !ok {
+		return nil, errors.New("selected database's schema not loaded")
+	}
 	return &DataGenerator{
 		total,
 		batch,
 		0,
 		s,
-	}
+	}, nil
 }
 
 // Next returns data batch

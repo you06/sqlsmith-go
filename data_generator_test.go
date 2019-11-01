@@ -70,7 +70,7 @@ func TestSQLSmith_DataGenerator(t *testing.T) {
 	ss.LoadSchema(schema)
 	ss.SetDB("community")
 
-	gen := ss.GenData(10, 5)
+	gen, _ := ss.GenData(10, 5)
 
 	for sqls := gen.Next(); len(sqls) != 0; sqls = gen.Next() {
 		t.Log(sqls)
