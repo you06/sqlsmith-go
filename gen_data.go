@@ -80,6 +80,8 @@ func (s *SQLSmith) generateDataItem(columnType string) string {
 		return s.generateIntItem()
 	case "timestamp":
 		return s.generateDateItem()
+	case "float":
+		return s.generateFloatItem()
 	}
 	return ""
 }
