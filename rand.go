@@ -39,12 +39,9 @@ func (s *SQLSmith) rdString (length int) string {
 	res := ""
 	for i := 0; i < length; i++ {
 		charCode := s.rdRange(33, 127)
-		// 66 stands for the char ", which will make SQL error
-		if charCode == 34 {
-			charCode++
-		}
-		if string(rune(charCode)) == "" {
-			fmt.Println(charCode)
+		// char '\' and '"' should be escaped
+		if charCode == 92 || charCode == 34 {
+			res = fmt.Sprintf("%s%s", res, "\\")
 		}
 		res = fmt.Sprintf("%s%s", res, string(rune(charCode)))
 	}
