@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"strings"
+	"github.com/you06/sqlsmith-go/types"
 )
 
 // BatchData generate testing data by schema in given batch
@@ -19,7 +20,7 @@ func (s *SQLSmith) BatchData(total, batchSize int) ([]string, error) {
 
 	var sqls []string
 	for _, table := range database.Tables {
-		var columns []*Column
+		var columns []*types.Column
 		for _, column := range table.Columns {
 			if column.Column == "id" {
 				continue
@@ -49,7 +50,7 @@ func (s *SQLSmith) BatchData(total, batchSize int) ([]string, error) {
 	return sqls, nil
 }
 
-func makeSQL(table *Table, columns []*Column, lines [][]string) string {
+func makeSQL(table *types.Table, columns []*types.Column, lines [][]string) string {
 	var columnNames []string
 	for _, column := range columns {
 		columnNames = append(columnNames, fmt.Sprintf("`%s`", column.Column))

@@ -1,9 +1,4 @@
-package sqlsmith
-
-import (
-	"github.com/pingcap/parser/ast"
-	"math/rand"
-)
+package types 
 
 // Column defines database column
 type Column struct {
@@ -14,6 +9,7 @@ type Column struct {
 	OriginColumn string
 	DataType string
 	Func bool
+	NewFunc bool
 }
 
 // Table defines database table

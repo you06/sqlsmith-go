@@ -1,126 +1,61 @@
 package sqlsmith
 
 import (
-	"bytes"
-	"github.com/pingcap/parser/model"
-
 	"github.com/pingcap/parser/ast"
-	"github.com/pingcap/parser/format"
+	"github.com/pingcap/parser/opcode"
 )
 
-func (s *SQLSmith) constructSelectStmt(pNode ast.Node, depth int) ast.Node {
-	if depth <= 0 {
-		return pNode
+func (s *SQLSmith) selectStmt(depth int) ast.Node {
+	if depth > s.depth {
+		s.depth = depth
 	}
-	r := s.rd(100)
-	switch pNode.(type) {
-	case nil:
-		sstmt := &ast.SelectStmt{}
-		s.Node = sstmt
-		if r>10{
-			sstmt.Distinct = true
-		}
-		if r>20{
-			sstmt.From = &ast.TableRefsClause{
-				TableRefs:&ast.Join{
-					Left:  nil, // Field
-					Right: nil, // Field
-					Tp:ast.CrossJoin,
-					On: nil,
-					Using: nil, // Field
-				},
-			}
-		}
-		if r>30{
-			sstmt.OrderBy = &ast.OrderByClause{
-				Items: nil, // Field
-			}
-		}
-		if r>40{
-			sstmt.Fields = nil // Field
-		}
-		return s.constructSelectStmt(sstmt, depth-1)
-	case *ast.SelectStmt:
-		var nextNode ast.Node
-		if r>10{
-			nextNode = &ast.WindowSpec{
-				Name: model.NewCIStr(""),
-				Ref: model.NewCIStr(""),
-				OrderBy:&ast.OrderByClause{
-					Items: nil,
-				},
-				Frame:&ast.FrameClause{},
-			}
-		}
 
-		return s.constructSelectStmt(nextNode, depth-1)
-	case *ast.TableRefsClause:
-		var nextNode ast.Node
-		if r>10{
-			nextNode = nil
-		}
-
-		return s.constructSelectStmt(nextNode, depth-1)
-	case *ast.GroupByClause:
-		var nextNode ast.Node
-		if r>10{
-			nextNode = &ast.HavingClause{
-				Expr:ast.ExprNode(nil),
-			}
-		}
-		return s.constructSelectStmt(nextNode, depth-1)
-	case *ast.WindowSpec:
-		var nextNode ast.Node
-		if r>10{
-			nextNode = ast.ExprNode(nil)
-		}
-		return s.constructSelectStmt(nextNode, depth-1)
-	case *ast.OrderByClause:
-		var nextNode ast.Node
-		if r>10{
-			nextNode = &ast.Limit{
-				Count:nil,
-				Offset:nil,
-			}
-		}
-		return s.constructSelectStmt(nextNode, depth-1)
-	case *ast.Limit:
-		var nextNode ast.Node
-		if r>10{
-			nextNode = nil
-		}
-		return s.constructSelectStmt(nextNode, depth-1)
-	case *ast.Join:
-		var nextNode ast.Node
-		if r>10{
-			_ = nextNode
-		}
-		if r>20{
-			_ = nextNode
-		}
-		return s.constructSelectStmt(nextNode, depth-1)
-	case *ast.OnCondition:
-		var nextNode ast.Node
-		if r>10{
-			_ = nextNode
-		}
-		if r>20{
-			_ = nextNode
-		}
-		return s.constructSelectStmt(nextNode, depth-1)
-	default:
-		return pNode
+	selectStmtNode := ast.SelectStmt{
+		SelectStmtOpts: &ast.SelectStmtOpts{
+			SQLCache: true,
+		},
+		Fields: &ast.FieldList{
+			Fields: []*ast.SelectField{},
+		},
 	}
+
+	selectStmtNode.From = s.tableRefsClause(depth + 1)
+
+	return &selectStmtNode
 }
 
-// ToSQL translate AST to SQL string
-func (s *SQLSmith) ToSQL() (string, error) {
-	b := bytes.NewBuffer([]byte{})
-	err := s.Node.Restore(
-		&format.RestoreCtx{
-			Flags:     format.RestoreStringEscapeBackslash,
-			In:        b,
-			JoinLevel: 10,
-		})
-	return b.String(), err
+func (s *SQLSmith) tableRefsClause(depth int) *ast.TableRefsClause {
+	if depth > s.depth {
+		s.depth = depth
+	}
+
+	tableRefsClause := ast.TableRefsClause{
+		TableRefs: &ast.Join{
+			Left: &ast.TableName{},
+		},
+	}
+
+	if s.depth < s.maxDepth {
+		// if s.rd(100) > 50 {
+		// 	tableRefsClause.TableRefs.Right = &ast.TableName{}
+		// } else {
+		// 	tableRefsClause.TableRefs.Right = &ast.TableSource{
+		// 		Source: s.selectStmt(depth + 1),
+		// 	}
+		// }
+		tableRefsClause.TableRefs.Right = &ast.TableSource{
+			Source: s.selectStmt(depth + 1),
+		}
+		if s.rd(100) > 30 {
+			tableRefsClause.TableRefs.On = &ast.OnCondition{
+				Expr: &ast.BinaryOperationExpr{
+					Op: opcode.EQ,
+					L: &ast.ColumnNameExpr{},
+					R: &ast.ColumnNameExpr{},
+				},
+			}
+		}
+	}
+
+	return &tableRefsClause
 }

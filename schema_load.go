@@ -3,6 +3,8 @@ package sqlsmith
 import (
 	"strings"
 	"regexp"
+
+	"github.com/you06/sqlsmith-go/types"
 )
 
 const typeRegex = `\(\d+\)`
@@ -22,21 +24,21 @@ func (s *SQLSmith) LoadSchema (records [][5]string) {
 		columnName := record[3]
 		columnType := record[4]
 		if _, ok := s.Databases[dbname]; !ok {
-			s.Databases[dbname] = &Database{
+			s.Databases[dbname] = &types.Database{
 				Name: dbname,
-				Tables: make(map[string]*Table),
+				Tables: make(map[string]*types.Table),
 			}
 		}
 		if _, ok := s.Databases[dbname].Tables[tableName]; !ok {
-			s.Databases[dbname].Tables[tableName] = &Table{
+			s.Databases[dbname].Tables[tableName] = &types.Table{
 				DB: dbname,
 				Table: tableName,
 				Type: tableType,
-				Columns: make(map[string]*Column),
+				Columns: make(map[string]*types.Column),
 			}
 		}
 		if _, ok := s.Databases[dbname].Tables[tableName].Columns[columnName]; !ok {
-			s.Databases[dbname].Tables[tableName].Columns[columnName] = &Column{
+			s.Databases[dbname].Tables[tableName].Columns[columnName] = &types.Column{
 				DB: dbname,
 				Table: tableName,
 				Column: columnName,

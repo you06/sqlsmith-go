@@ -68,23 +68,8 @@ func TestSQLSmith_ToSQL(t *testing.T) {
 		{"community", "users", "BASE TABLE", "team_id", "int(11)"},
 	}
 	ss.LoadSchema(schema)
-	// resultSet := ss.BatchGenSQL(1)
-	// for _,v:=range resultSet{
-	// 	t.Log(v)
-	// }
-	node := ss.SelectStmt(10)
 
 	ss.SetDB("community")
-	sql, err :=	ss.Walk(node)
-
-	for i := 0; i < 1; i++ {
-		t.Log(i, ss.rdRange(1, 5))
-		node := ss.SelectStmt(ss.rdRange(1, 600))
-		_, _ =	ss.Walk(node)
-	}
-
-	if err != nil {
-		t.Fatalf("walk error %v", err)
-	}
+	sql, _ := ss.SelectStmt(3)
 	t.Log(sql)
 }
