@@ -1,0 +1,42 @@
+package builtin
+
+
+import "github.com/pingcap/parser/ast"
+
+var logicFunctions = []*functionClass{
+	{ast.LogicAnd, 2, 2, false, true},
+	{ast.LogicOr, 2, 2, false, true},
+	{ast.LogicXor, 2, 2, false, true},
+	{ast.GE, 2, 2, false, true},
+	{ast.LE, 2, 2, false, true},
+	{ast.EQ, 2, 2, false, true},
+	{ast.NE, 2, 2, false, true},
+	{ast.LT, 2, 2, false, true},
+	{ast.GT, 2, 2, false, true},
+	{ast.NullEQ, 2, 2, false, true},
+	{ast.Plus, 2, 2, false, true},
+	{ast.Minus, 2, 2, false, true},
+	{ast.Mod, 2, 2, false, true},
+	{ast.Div, 2, 2, false, true},
+	{ast.Mul, 2, 2, false, true},
+	{ast.IntDiv, 2, 2, false, true},
+	{ast.BitNeg, 1, 1, false, true},
+	{ast.And, 2, 2, false, true},
+	{ast.LeftShift, 2, 2, false, true},
+	{ast.RightShift, 2, 2, false, true},
+	{ast.UnaryNot, 1, 1, false, true},
+	{ast.Or, 2, 2, false, true},
+	{ast.Xor, 2, 2, false, true},
+	{ast.UnaryMinus, 1, 1, false, true},
+	{ast.In, 2, -1, false, true},
+	{ast.IsTruth, 1, 1, false, true},
+	{ast.IsFalsity, 1, 1, false, true},
+	{ast.Like, 3, 3, false, true},
+	{ast.Regexp, 2, 2, false, true},
+	{ast.Case, 1, -1, false, true},
+	{ast.RowFunc, 2, -1, false, true},
+	{ast.SetVar, 2, 2, false, true},
+	{ast.GetVar, 1, 1, false, true},
+	{ast.BitCount, 1, 1, false, true},
+	{ast.GetParam, 1, 1, false, true},
+}

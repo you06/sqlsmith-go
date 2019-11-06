@@ -33,14 +33,6 @@ func (s *SQLSmith) SetDB(db string) {
 	s.currDB = db
 }
 
-// SelectStmt make random select statement SQL
-func (s *SQLSmith) SelectStmt(depth int) (string, error) {
-	s.depth = 1
-	s.maxDepth = depth
-	tree := s.selectStmt(1)
-	return stateflow.New(s.Databases[s.currDB]).WalkTree(tree)
-}
-
 // Walk will walk the tree and fillin tables and columns data
 func (s *SQLSmith) Walk(tree ast.Node) (string, error) {
 	return stateflow.New(s.Databases[s.currDB]).WalkTree(tree)

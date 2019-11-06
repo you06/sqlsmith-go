@@ -1,24 +1,17 @@
 package stateflow
 
 import (
-	"bytes"
 	"github.com/pingcap/parser/ast"
-	"github.com/pingcap/parser/format"
 	"github.com/pingcap/parser/model"
 	"github.com/you06/sqlsmith-go/types"
 	"github.com/you06/sqlsmith-go/builtin"
+	"github.com/you06/sqlsmith-go/util"	
 )
 
 // WalkTree parse
 func (s *StateFlow) WalkTree(node ast.Node) (string, error) {
 	s.walkTree(node)
-	
-	out := new(bytes.Buffer)
-	err := node.Restore(format.NewRestoreCtx(format.RestoreStringDoubleQuotes, out))
-	if err != nil {
-		return "", err
-	}
-	return string(out.Bytes()), nil
+	return util.BufferOut(node)
 }
 
 func (s *StateFlow) walkTree(node ast.Node) {
