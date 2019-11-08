@@ -142,6 +142,6 @@ func TestSQLSmith_Insert(t *testing.T) {
 	ss.LoadSchema(schema)
 
 	ss.SetDB("community")
-	sql, _ := ss.InsertStmt(true)
-	t.Log(sql)
+	sql, err := ss.InsertStmtAST()
+	t.Log(sql, err)
 }

@@ -18,10 +18,14 @@ func (s *SQLSmith) SelectStmt(depth int) (string, error) {
 }
 
 // UpdateStmt make random update statement SQL
-func (s *SQLSmith) UpdateStmt(depth int) (string, error) {
-	s.depth = 1
-	s.maxDepth = depth
-	tree := s.updateStmt(1)
+func (s *SQLSmith) UpdateStmt() (string, error) {
+	tree := s.updateStmt()
+	return s.Walk(tree)
+}
+
+// InsertStmtAST implement insert statement from AST
+func (s *SQLSmith) InsertStmtAST() (string, error) {
+	tree := s.insertStmt()
 	return s.Walk(tree)
 }
 

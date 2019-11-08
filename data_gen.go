@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 	"github.com/you06/sqlsmith-go/types"
+	"github.com/you06/sqlsmith-go/util"
 )
 
 // BatchData generate testing data by schema in given batch
@@ -33,7 +34,7 @@ func (s *SQLSmith) BatchData(total, batchSize int) ([]string, error) {
 		for i := 0; i < total; i++ {
 			var line []string
 			for _, column := range columns {
-				line = append(line, s.generateDataItem(column.DataType))
+				line = append(line, util.GenerateDateItemString(column.DataType))
 			}
 			lines = append(lines, line)
 			count ++

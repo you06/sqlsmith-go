@@ -9,3 +9,5 @@ require (
 	github.com/sirupsen/logrus v1.4.2 // indirect
 	github.com/stretchr/testify v1.3.0
 )
+
+replace github.com/pingcap/tidb => github.com/you06/tidb v1.1.0-beta.0.20191107073350-1f019a46fa2c

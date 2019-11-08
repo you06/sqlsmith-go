@@ -3,7 +3,9 @@ package stateflow
 
 import (
 	"fmt"
+	"github.com/pingcap/parser/ast"
 	"github.com/you06/sqlsmith-go/types"
+	"github.com/you06/sqlsmith-go/util"
 )
 
 func (s *StateFlow) randTableFromTable(table *types.Table, newName bool, fn bool) (*types.Table) {
@@ -41,7 +43,7 @@ func (s *StateFlow) randTableFromTable(table *types.Table, newName bool, fn bool
 		newTable.Columns[newColumn.Column] = newColumn
 	}
 	if fn {
-		r := s.rd(4)
+		r := util.Rd(4)
 		for i := 0; i < r; i++ {
 			k := fmt.Sprintf("f%d", i)
 			newTable.Columns[k] = &types.Column{
@@ -60,7 +62,7 @@ func (s *StateFlow) randTableFromTable(table *types.Table, newName bool, fn bool
 func (s *StateFlow) randTable(newName bool, fn bool) (*types.Table) {
 	tables := s.db.Tables
 	index := 0
-	k := s.rd(len(tables))
+	k := util.Rd(len(tables))
 	for _, table := range tables {
 		if index == k {
 			return s.randTableFromTable(table, newName, fn)
@@ -75,7 +77,7 @@ func (s *StateFlow) randColumns(table *types.Table) []*types.Column {
 	var columns []*types.Column
 	rate := float64(0.75)
 	for _, column := range table.Columns {
-		if s.rdFloat64() < rate {
+		if util.RdFloat64() < rate {
 			columns = append(columns, column)
 		}
 	}
@@ -146,4 +148,41 @@ func (s *StateFlow) renameTable(table *types.Table) *types.Table {
 		column.Table = newName
 	}
 	return table
+}
+
+func (s *StateFlow) randNewTable() *types.Table {
+	table := types.Table{
+		DB: s.db.Name,
+		Table: util.RdStringChar(util.RdRange(5, 10)),
+		Type: "BASE TABLE",
+		Columns: make(map[string]*types.Column),
+	}
+	table.Columns["id"] = &types.Column{
+		DB: table.DB,
+		Table: table.Table,
+		Column: "id",
+		DataType: "int",
+		DataLen: 11,
+	}
+	if util.Rd(4) < 4 {
+		table.Columns["id"].AddOption(ast.ColumnOptionNotNull)
+		table.Columns["id"].AddOption(ast.ColumnOptionAutoIncrement)
+	}
+	columnCount := util.Rd(15)
+	for i := 0; i < columnCount; i++ {
+		columnName := util.RdStringChar(util.RdRange(5, 10))
+		columnType := util.RdType()
+		columnLen := util.RdDataLen(columnType)
+		columnOptions := util.RdColumnOptions(columnType)
+		table.Columns[columnName] = &types.Column{
+			DB: table.DB,
+			Table: table.Table,
+			Column: columnName,
+			DataType: columnType,
+			DataLen: columnLen,
+			Options: columnOptions,
+		}
+	}
+
+	return &table
 }

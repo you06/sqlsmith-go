@@ -1,9 +1,9 @@
 package sqlsmith
 
 import (
-	// "github.com/pingcap/tidb/types/parser_driver"
 	"github.com/pingcap/parser/ast"
 	"github.com/pingcap/parser/opcode"
+	"github.com/you06/sqlsmith-go/util"
 )
 
 func (s *SQLSmith) selectStmt(depth int) ast.Node {
@@ -25,11 +25,7 @@ func (s *SQLSmith) selectStmt(depth int) ast.Node {
 	return &selectStmtNode
 }
 
-func (s *SQLSmith) updateStmt(depth int) ast.Node {
-	if depth > s.depth {
-		s.depth = depth
-	}
-
+func (s *SQLSmith) updateStmt() ast.Node {
 	updateStmtNode := ast.UpdateStmt{
 		List: []*ast.Assignment{},
 		TableRefs: &ast.TableRefsClause{
@@ -41,13 +37,25 @@ func (s *SQLSmith) updateStmt(depth int) ast.Node {
 
 	whereRand := s.rd(10)
 	if whereRand < 5 {
-		updateStmtNode.Where = &ast.BinaryOperationExpr{}
+		updateStmtNode.Where = s.binaryOperationExpr(whereRand)
 	} else {
-		// updateStmtNode.Where = &driver.ValueExpr{}
 		updateStmtNode.Where = ast.NewValueExpr(1)
 	}
 
 	return &updateStmtNode
+}
+
+func (s *SQLSmith) insertStmt() ast.Node {
+	insertStmtNode := ast.InsertStmt{
+		Table: &ast.TableRefsClause{
+			TableRefs: &ast.Join{
+				Left: &ast.TableName{},
+			},
+		},
+		Lists: [][]ast.ExprNode{},
+		Columns: []*ast.ColumnName{},
+	}
+	return &insertStmtNode
 }
 
 func (s *SQLSmith) tableRefsClause(depth int) *ast.TableRefsClause {
@@ -84,4 +92,43 @@ func (s *SQLSmith) tableRefsClause(depth int) *ast.TableRefsClause {
 	}
 
 	return &tableRefsClause
+}
+
+func (s *SQLSmith) binaryOperationExpr(depth int) *ast.BinaryOperationExpr {
+	node := ast.BinaryOperationExpr{}
+	if depth > 0 {
+		r := util.Rd(4)
+		switch r {
+		case 0:
+			node.Op = opcode.LogicXor
+		case 1:
+			node.Op = opcode.LogicOr
+		default:
+			node.Op = opcode.LogicAnd
+		}
+		node.L = s.binaryOperationExpr(0)
+		node.R = s.binaryOperationExpr(depth - 1)
+	} else {
+		r := util.Rd(4)
+		switch r {
+		case 0:
+			node.Op = opcode.GT
+		case 1:
+			node.Op = opcode.LT
+		case 2:
+			node.Op = opcode.NE
+		default:
+			node.Op = opcode.EQ
+		}
+		node.L = &ast.ColumnNameExpr{}
+		r = util.Rd(3)
+		switch r{
+		case 0:
+			// hope there is an empty value type
+			node.R = ast.NewValueExpr(1)
+		default:
+			node.R = &ast.ColumnNameExpr{}
+		}
+	}
+	return &node
 }

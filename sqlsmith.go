@@ -7,6 +7,9 @@ import (
 	"github.com/pingcap/parser/ast"
 	"github.com/you06/sqlsmith-go/stateflow"
 	"github.com/you06/sqlsmith-go/types"
+	"github.com/you06/sqlsmith-go/util"
+
+	_ "github.com/pingcap/tidb/types/parser_driver"
 )
 
 // SQLSmith defines SQLSmith struct
@@ -35,5 +38,8 @@ func (s *SQLSmith) SetDB(db string) {
 
 // Walk will walk the tree and fillin tables and columns data
 func (s *SQLSmith) Walk(tree ast.Node) (string, error) {
-	return stateflow.New(s.Databases[s.currDB]).WalkTree(tree)
+	node := stateflow.New(s.Databases[s.currDB]).WalkTree(tree)
+	sql, err := util.BufferOut(node)
+	// if sql ==
+	return sql, err
 }
