@@ -31,14 +31,24 @@ func New() *SQLSmith {
 	}
 }
 
-// SetDB set currerent database
+// SetDB set current database
 func (s *SQLSmith) SetDB(db string) {
 	s.currDB = db
 }
 
+// GetDB get current database without nil
+func (s *SQLSmith) GetDB(db string) *types.Database {
+	if db, ok := s.Databases[db]; ok {
+		return db
+	}
+	return &types.Database{
+		Name: db,
+	}
+}
+
 // Walk will walk the tree and fillin tables and columns data
 func (s *SQLSmith) Walk(tree ast.Node) (string, error) {
-	node := stateflow.New(s.Databases[s.currDB]).WalkTree(tree)
+	node := stateflow.New(s.GetDB(s.currDB)).WalkTree(tree)
 	sql, err := util.BufferOut(node)
 	// if sql ==
 	return sql, err
