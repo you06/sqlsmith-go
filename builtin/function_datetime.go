@@ -30,7 +30,7 @@ var datetimeFunctions = []*functionClass{
 	{ast.GetFormat, 2, 2, false, true},
 	{ast.Hour, 1, 1, false, true},
 	{ast.LocalTime, 0, 1, false, true},
-	{ast.LocalTimestamp, 0, 1, false, true},
+	// {ast.LocalTimestamp, 0, 1, true, true},
 	{ast.MakeDate, 2, 2, false, true},
 	{ast.MakeTime, 3, 3, false, true},
 	{ast.MicroSecond, 1, 1, false, true},

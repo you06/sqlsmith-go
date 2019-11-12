@@ -1,6 +1,8 @@
 package types
 
-import "github.com/you06/sqlsmith-go/util"
+import (
+	"github.com/you06/sqlsmith-go/util"
+)
 
 // Table defines database table
 type Table struct {

@@ -178,6 +178,7 @@ github.com/you06/tidb v1.1.0-beta.0.20191107072401-0c82ff73f4b1 h1:sL0Q20zJNq7PJ
 github.com/you06/tidb v1.1.0-beta.0.20191107072401-0c82ff73f4b1/go.mod h1:N8LOrZQBeRpnWaQblZGc1tR9+Le7J2bHAGqSJ4NaNEY=
 github.com/you06/tidb v1.1.0-beta.0.20191107073350-1f019a46fa2c h1:cax99bJVXv0seFGcT69fL0Pmc67rL+hCufDbY32p+ZA=
 github.com/you06/tidb v1.1.0-beta.0.20191107073350-1f019a46fa2c/go.mod h1:N8LOrZQBeRpnWaQblZGc1tR9+Le7J2bHAGqSJ4NaNEY=
+github.com/you06/tidb v2.0.11+incompatible h1:bfK3E4nGm04yKGwfJGFrb7a7henTQhWJb4dYne52wdQ=
 go.etcd.io/bbolt v1.3.2/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=
 go.etcd.io/bbolt v1.3.3/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=
 go.etcd.io/etcd v0.0.0-20190320044326-77d4b742cdbf/go.mod h1:KSGwdbiFchh5KIC9My2+ZVl5/3ANcwohw50dpPwa2cw=

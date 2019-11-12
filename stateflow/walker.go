@@ -52,6 +52,9 @@ func (s *StateFlow) walkSelectStmt(node *ast.SelectStmt) *types.Table {
 
 func (s *StateFlow) walkUpdateStmt(node *ast.UpdateStmt) *types.Table {
 	table := s.walkTableName(node.TableRefs.TableRefs.Left.(*ast.TableName), false)
+	for len(table.Columns) == 0 {
+		table = s.walkTableName(node.TableRefs.TableRefs.Left.(*ast.TableName), false)
+	}
 	s.walkAssignmentList(&node.List, table)
 	s.walkExprNode(node.Where, table, nil)
 	// switch node := node.Where.(type) {
