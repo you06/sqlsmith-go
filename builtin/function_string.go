@@ -45,7 +45,7 @@ var stringFunctions = []*functionClass{
 	// not support fully trim, since the trim expression is special
 	// SELECT TRIM('miyuri' FROM 'miyuri-jinja-no-miyuri');
 	// {ast.Trim, 1, 3, false, true},
-	{ast.Trim, 1, 1, false, true},	
+	// {ast.Trim, 1, 1, false, true},	
 	{ast.Upper, 1, 1, false, true},
 	{ast.Ucase, 1, 1, false, true},
 	{ast.Hex, 1, 1, false, true},
