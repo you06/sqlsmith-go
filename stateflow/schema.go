@@ -168,7 +168,7 @@ func (s *StateFlow) randNewTable() *types.Table {
 		table.Columns["id"].AddOption(ast.ColumnOptionNotNull)
 		table.Columns["id"].AddOption(ast.ColumnOptionAutoIncrement)
 	}
-	columnCount := util.Rd(15)
+	columnCount := util.RdRange(2, 20)
 	for i := 0; i < columnCount; i++ {
 		columnName := util.RdStringChar(util.RdRange(5, 10))
 		columnType := util.RdType()
