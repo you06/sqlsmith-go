@@ -4,12 +4,13 @@ import (
 	"math/rand"
 	"time"
 
+	"github.com/juju/errors"
 	"github.com/pingcap/parser/ast"
 	"github.com/you06/sqlsmith-go/stateflow"
 	"github.com/you06/sqlsmith-go/types"
 	"github.com/you06/sqlsmith-go/util"
 
-	_ "github.com/pingcap/tidb/types/parser_driver"
+	// _ "github.com/pingcap/tidb/types/parser_driver"
 )
 
 // SQLSmith defines SQLSmith struct
@@ -63,5 +64,5 @@ func (s *SQLSmith) Walk(tree ast.Node) (string, error) {
 	s.debugPrintf("node AST %+v\n", node)
 	sql, err := util.BufferOut(node)
 	// if sql ==
-	return sql, err
+	return sql, errors.Trace(err)
 }
