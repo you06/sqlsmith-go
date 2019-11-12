@@ -60,6 +60,7 @@ func (s *SQLSmith) GetDB(db string) *types.Database {
 // Walk will walk the tree and fillin tables and columns data
 func (s *SQLSmith) Walk(tree ast.Node) (string, error) {
 	node := stateflow.New(s.GetDB(s.currDB)).WalkTree(tree)
+	s.debugPrintf("node AST %+v\n", node)
 	sql, err := util.BufferOut(node)
 	// if sql ==
 	return sql, err
