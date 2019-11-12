@@ -36,6 +36,11 @@ func (s *SQLSmith) SetDB(db string) {
 	s.currDB = db
 }
 
+// GetCurrDBName returns current selected dbname
+func (s *SQLSmith) GetCurrDBName() string {
+	return s.currDB
+}
+
 // GetDB get current database without nil
 func (s *SQLSmith) GetDB(db string) *types.Database {
 	if db, ok := s.Databases[db]; ok {
