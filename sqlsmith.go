@@ -21,6 +21,7 @@ type SQLSmith struct {
 	subTableIndex int
 	Node ast.Node
 	currDB string
+	debug bool
 }
 
 // New create SQLSmith instance
@@ -29,6 +30,11 @@ func New() *SQLSmith {
 		Rand:      rand.New(rand.NewSource(time.Now().UnixNano())),
 		Databases: make(map[string]*types.Database),
 	}
+}
+
+// Debug turn on debug mode
+func (s *SQLSmith) Debug() {
+	s.debug = true
 }
 
 // SetDB set current database
