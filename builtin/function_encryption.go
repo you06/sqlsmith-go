@@ -16,7 +16,7 @@ var encryptionFunctions = []*functionClass{
 	{ast.Encrypt, 1, 2, false, true},
 	{ast.MD5, 1, 1, false, true},
 	{ast.OldPassword, 1, 1, false, true},
-	{ast.PasswordFunc, 1, 1, false, true},
+	// {ast.PasswordFunc, 1, 1, false, true},
 	{ast.RandomBytes, 1, 1, false, true},
 	{ast.SHA1, 1, 1, false, true},
 	{ast.SHA, 1, 1, false, true},

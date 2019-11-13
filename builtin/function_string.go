@@ -52,7 +52,7 @@ var stringFunctions = []*functionClass{
 	{ast.Unhex, 1, 1, false, true},
 	{ast.Rpad, 3, 3, false, true},
 	{ast.BitLength, 1, 1, false, true},
-	{ast.CharFunc, 2, -1, false, true},
+	// {ast.CharFunc, 2, -1, false, true},
 	{ast.CharLength, 1, 1, false, true},
 	{ast.CharacterLength, 1, 1, false, true},
 	{ast.FindInSet, 2, 2, false, true},
