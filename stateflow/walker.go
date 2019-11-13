@@ -47,6 +47,7 @@ func (s *StateFlow) walkSelectStmt(node *ast.SelectStmt) *types.Table {
 		table = mergeTable
 		s.walkSelectStmtColumns(node, table, true)
 	}
+	s.walkOrderByClause(node.OrderBy, table)
 	return table
 }
 
@@ -246,4 +247,23 @@ func (s *StateFlow) makeList(table *types.Table) []ast.ExprNode {
 		list = append(list, ast.NewValueExpr(util.GenerateDataItem(column.DataType)))
 	}
 	return list
+}
+
+func (s *StateFlow) walkOrderByClause(node *ast.OrderByClause, table *types.Table) {
+	orderBys := s.randColumns(table)
+	for _, column := range orderBys {
+		item := ast.ByItem{
+			Expr: &ast.ColumnNameExpr{
+				Name: &ast.ColumnName{
+					Name: model.NewCIStr(column.Column),
+				},
+			},
+		}
+
+		if util.Rd(2) == 0 {
+			item.Desc = true
+		}
+
+		node.Items = append(node.Items, &item)
+	}
 }

@@ -18,6 +18,7 @@ func (s *SQLSmith) selectStmt(depth int) ast.Node {
 		Fields: &ast.FieldList{
 			Fields: []*ast.SelectField{},
 		},
+		OrderBy: &ast.OrderByClause{},
 	}
 
 	selectStmtNode.From = s.tableRefsClause(depth + 1)
