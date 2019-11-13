@@ -45,7 +45,8 @@ var datetimeFunctions = []*functionClass{
 	{ast.Second, 1, 1, false, true},
 	{ast.StrToDate, 2, 2, false, true},
 	{ast.SubTime, 2, 2, false, true},
-	{ast.Sysdate, 0, 1, false, true},
+	// will make diff
+	// {ast.Sysdate, 0, 1, false, true},
 	{ast.Time, 1, 1, false, true},
 	{ast.TimeLiteral, 1, 1, false, true},
 	{ast.TimeFormat, 2, 2, false, true},

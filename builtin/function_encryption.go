@@ -3,10 +3,11 @@ package builtin
 
 import "github.com/pingcap/parser/ast"
 
+// compress and uncompress function make diff
 var encryptionFunctions = []*functionClass{
 	{ast.AesDecrypt, 2, 3, false, true},
 	{ast.AesEncrypt, 2, 3, false, true},
-	{ast.Compress, 1, 1, false, true},
+	// {ast.Compress, 1, 1, false, true},
 	{ast.Decode, 2, 2, false, true},
 	{ast.DesDecrypt, 1, 2, false, true},
 	{ast.DesEncrypt, 1, 2, false, true},
@@ -19,7 +20,7 @@ var encryptionFunctions = []*functionClass{
 	{ast.SHA1, 1, 1, false, true},
 	{ast.SHA, 1, 1, false, true},
 	{ast.SHA2, 2, 2, false, true},
-	{ast.Uncompress, 1, 1, false, true},
-	{ast.UncompressedLength, 1, 1, false, true},
+	// {ast.Uncompress, 1, 1, false, true},
+	// {ast.UncompressedLength, 1, 1, false, true},
 	{ast.ValidatePasswordStrength, 1, 1, false, true},
 }

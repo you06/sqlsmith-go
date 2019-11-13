@@ -4,9 +4,11 @@ package builtin
 import "github.com/pingcap/parser/ast"
 
 var informationFunctions = []*functionClass{
-	{ast.ConnectionID, 0, 0, false, true},
+	// will make diff
+	// {ast.ConnectionID, 0, 0, false, true},
 	{ast.CurrentUser, 0, 0, false, true},
-	{ast.CurrentRole, 0, 0, false, true},
+	// should be fix
+	// {ast.CurrentRole, 0, 0, false, true},
 	{ast.Database, 0, 0, false, true},
 	// This function is a synonym for DATABASE().
 	// See http://dev.mysql.com/doc/refman/5.7/en/information-functions.html#function_schema
@@ -20,6 +22,7 @@ var informationFunctions = []*functionClass{
 	{ast.Coercibility, 1, 1, false, true},
 	{ast.Collation, 1, 1, false, true},
 	{ast.RowCount, 0, 0, false, true},
-	{ast.SessionUser, 0, 0, false, true},
-	{ast.SystemUser, 0, 0, false, true},
+	// Will make difference in abtest
+	// {ast.SessionUser, 0, 0, false, true},
+	// {ast.SystemUser, 0, 0, false, true},
 }
