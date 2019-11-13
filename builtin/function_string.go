@@ -20,7 +20,7 @@ var stringFunctions = []*functionClass{
 	{ast.Left, 2, 2, false, true},
 	{ast.Right, 2, 2, false, true},
 	{ast.Length, 1, 1, false, true},
-	{ast.LoadFile, 1, 1, false, true},
+	// {ast.LoadFile, 1, 1, false, true},
 	{ast.Locate, 2, 3, false, true},
 	{ast.Lower, 1, 1, false, true},
 	{ast.Lpad, 3, 3, false, true},

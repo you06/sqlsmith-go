@@ -8,7 +8,8 @@ var encryptionFunctions = []*functionClass{
 	{ast.AesDecrypt, 2, 3, false, true},
 	{ast.AesEncrypt, 2, 3, false, true},
 	// {ast.Compress, 1, 1, false, true},
-	{ast.Decode, 2, 2, false, true},
+	// removed in MySQL 8.0.3
+	// {ast.Decode, 2, 2, false, true},
 	{ast.DesDecrypt, 1, 2, false, true},
 	{ast.DesEncrypt, 1, 2, false, true},
 	{ast.Encode, 2, 2, false, true},
