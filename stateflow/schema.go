@@ -67,7 +67,7 @@ func (s *StateFlow) randTable(newName bool, fn bool) (*types.Table) {
 	for _, table := range tables {
 		if index == k {
 			for len(newTable.Columns) == 0 {
-				s.randTableFromTable(table, newName, fn)
+				newTable = s.randTableFromTable(table, newName, fn)
 			}
 			return newTable
 		}
@@ -172,7 +172,7 @@ func (s *StateFlow) randNewTable() *types.Table {
 		table.Columns["id"].AddOption(ast.ColumnOptionNotNull)
 		table.Columns["id"].AddOption(ast.ColumnOptionAutoIncrement)
 	}
-	columnCount := util.RdRange(2, 20)
+	columnCount := util.RdRange(4, 20)
 	for i := 0; i < columnCount; i++ {
 		columnName := util.RdStringChar(util.RdRange(5, 10))
 		columnType := util.RdType()
