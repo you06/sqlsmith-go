@@ -60,12 +60,16 @@ func (s *StateFlow) randTableFromTable(table *types.Table, newName bool, fn bool
 }
 
 func (s *StateFlow) randTable(newName bool, fn bool) (*types.Table) {
+	newTable := new(types.Table)
 	tables := s.db.Tables
 	index := 0
 	k := util.Rd(len(tables))
 	for _, table := range tables {
 		if index == k {
-			return s.randTableFromTable(table, newName, fn)
+			for len(newTable.Columns) == 0 {
+				s.randTableFromTable(table, newName, fn)
+			}
+			return newTable
 		}
 		index++
 	}
