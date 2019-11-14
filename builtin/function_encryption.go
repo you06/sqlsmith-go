@@ -23,5 +23,5 @@ var encryptionFunctions = []*functionClass{
 	{ast.SHA2, 2, 2, false, true},
 	// {ast.Uncompress, 1, 1, false, true},
 	// {ast.UncompressedLength, 1, 1, false, true},
-	{ast.ValidatePasswordStrength, 1, 1, false, true},
+	// {ast.ValidatePasswordStrength, 1, 1, false, true},
 }
