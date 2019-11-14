@@ -18,7 +18,7 @@ func (t *Table) RandColumn() *Column {
 	if len(t.Columns) == 0 {
 		return nil
 	}
-	rdIndex := util.RdRange(1, len(t.Columns))
+	rdIndex := util.RdRange(0, len(t.Columns))
 	index := 0
 	for _, column := range t.Columns {
 		if rdIndex == index {
