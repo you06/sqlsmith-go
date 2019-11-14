@@ -245,13 +245,11 @@ func (s *StateFlow) walkLists(lists *[][]ast.ExprNode, columns []*types.Column) 
 func (s *StateFlow) makeList(columns []*types.Column) []ast.ExprNode {
 	var list []ast.ExprNode
 	for _, column := range columns {
-		fmt.Printf("%s, ", column.Column)
 		if column.Column == "id" {
 			continue
 		}
 		list = append(list, ast.NewValueExpr(util.GenerateDataItem(column.DataType)))
 	}
-	fmt.Printf("\n")
 	return list
 }
 
