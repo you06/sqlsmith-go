@@ -17,6 +17,9 @@ func Rd (n int) int {
 }
 
 func RdRange (n, m int) int {
+	if n == m {
+		return n
+	}
 	if m < n {
 		n, m = m, n
 	}
