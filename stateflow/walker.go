@@ -1,6 +1,7 @@
 package stateflow
 
 import (
+	"fmt"
 	"github.com/pingcap/tidb/types/parser_driver"
 	tidbTypes "github.com/pingcap/tidb/types"
 	"github.com/pingcap/parser/ast"
@@ -67,8 +68,8 @@ func (s *StateFlow) walkUpdateStmt(node *ast.UpdateStmt) *types.Table {
 
 func (s *StateFlow) walkInsertStmt(node *ast.InsertStmt) *types.Table {
 	table := s.walkTableName(node.Table.TableRefs.Left.(*ast.TableName), false)	
-	s.walkColumns(&node.Columns, table)
-	s.walkLists(&node.Lists, table)
+	columns := s.walkColumns(&node.Columns, table)
+	s.walkLists(&node.Lists, columns)
 	return nil
 }
 
@@ -219,7 +220,8 @@ func (s *StateFlow) walkBinaryOperationExpr(node *ast.BinaryOperationExpr, table
 	s.walkExprNode(node.R, table, s.walkExprNode(node.L, table, nil))
 }
 
-func (s *StateFlow) walkColumns(columns *[]*ast.ColumnName, table *types.Table) {
+func (s *StateFlow) walkColumns(columns *[]*ast.ColumnName, table *types.Table) []*types.Column {
+	var cols []*types.Column
 	for _, column := range table.Columns {
 		if column.Column == "id" {
 			continue
@@ -228,24 +230,28 @@ func (s *StateFlow) walkColumns(columns *[]*ast.ColumnName, table *types.Table) 
 			Table: model.NewCIStr(column.Table),
 			Name: model.NewCIStr(column.Column),
 		})
-	}	
+		cols = append(cols, column)
+	}
+	return cols
 }
 
-func (s *StateFlow) walkLists(lists *[][]ast.ExprNode, table *types.Table) {
+func (s *StateFlow) walkLists(lists *[][]ast.ExprNode, columns []*types.Column) {
 	count := util.Rd(20)
 	for i := 0; i < count; i++ {
-		*lists = append(*lists, s.makeList(table))	
+		*lists = append(*lists, s.makeList(columns))	
 	}
 }
 
-func (s *StateFlow) makeList(table *types.Table) []ast.ExprNode {
+func (s *StateFlow) makeList(columns []*types.Column) []ast.ExprNode {
 	var list []ast.ExprNode
-	for _, column := range table.Columns {
+	for _, column := range columns {
+		fmt.Printf("%s, ", column.Column)
 		if column.Column == "id" {
 			continue
 		}
 		list = append(list, ast.NewValueExpr(util.GenerateDataItem(column.DataType)))
 	}
+	fmt.Printf("\n")
 	return list
 }
 

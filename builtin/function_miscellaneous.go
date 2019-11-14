@@ -9,7 +9,7 @@ var miscellaneousFunctions = []*functionClass{
 	{ast.InetNtoa, 1, 1, false, true},
 	{ast.Inet6Aton, 1, 1, false, true},
 	{ast.Inet6Ntoa, 1, 1, false, true},
-	{ast.IsFreeLock, 1, 1, false, true},
+	// {ast.IsFreeLock, 1, 1, false, true},
 	{ast.IsIPv4, 1, 1, false, true},
 	{ast.IsIPv4Compat, 1, 1, false, true},
 	{ast.IsIPv4Mapped, 1, 1, false, true},

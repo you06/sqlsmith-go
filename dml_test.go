@@ -99,12 +99,12 @@ func TestSQLSmith_Insert(t *testing.T) {
 
 	ss.SetDB(testSchemaName)
 
-	for i := 0; i < 1000; i++ {
-		sql, err := ss.InsertStmtAST()
-		if err != nil {
-			t.Log(sql, err)
-		}
-	}
+	// for i := 0; i < 1000; i++ {
+	// 	sql, err := ss.InsertStmtAST()
+	// 	if err != nil {
+	// 		t.Log(sql, err)
+	// 	}
+	// }
 	sql, err := ss.InsertStmtAST()
 	t.Log(sql, err)
 }
