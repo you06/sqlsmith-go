@@ -1,7 +1,6 @@
 package stateflow
 
 import (
-	"fmt"
 	"github.com/pingcap/tidb/types/parser_driver"
 	tidbTypes "github.com/pingcap/tidb/types"
 	"github.com/pingcap/parser/ast"
