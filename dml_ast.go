@@ -7,10 +7,6 @@ import (
 )
 
 func (s *SQLSmith) selectStmt(depth int) ast.Node {
-	if depth > s.depth {
-		s.depth = depth
-	}
-
 	selectStmtNode := ast.SelectStmt{
 		SelectStmtOpts: &ast.SelectStmtOpts{
 			SQLCache: true,
@@ -21,7 +17,9 @@ func (s *SQLSmith) selectStmt(depth int) ast.Node {
 		OrderBy: &ast.OrderByClause{},
 	}
 
-	selectStmtNode.From = s.tableRefsClause(depth + 1)
+	selectStmtNode.Where = s.binaryOperationExpr(util.Rd(depth + 1))
+
+	selectStmtNode.From = s.tableRefsClause(depth)
 
 	return &selectStmtNode
 }
@@ -60,17 +58,13 @@ func (s *SQLSmith) insertStmt() ast.Node {
 }
 
 func (s *SQLSmith) tableRefsClause(depth int) *ast.TableRefsClause {
-	if depth > s.depth {
-		s.depth = depth
-	}
-
 	tableRefsClause := ast.TableRefsClause{
 		TableRefs: &ast.Join{
 			Left: &ast.TableName{},
 		},
 	}
 
-	if s.depth < s.maxDepth {
+	if s.depth > 1 {
 		// if s.rd(100) > 50 {
 		// 	tableRefsClause.TableRefs.Right = &ast.TableName{}
 		// } else {
@@ -79,7 +73,7 @@ func (s *SQLSmith) tableRefsClause(depth int) *ast.TableRefsClause {
 		// 	}
 		// }
 		tableRefsClause.TableRefs.Right = &ast.TableSource{
-			Source: s.selectStmt(depth + 1),
+			Source: s.selectStmt(depth - 1),
 		}
 		if s.rd(100) > 30 {
 			tableRefsClause.TableRefs.On = &ast.OnCondition{
@@ -95,7 +89,7 @@ func (s *SQLSmith) tableRefsClause(depth int) *ast.TableRefsClause {
 	return &tableRefsClause
 }
 
-func (s *SQLSmith) binaryOperationExpr(depth int) *ast.BinaryOperationExpr {
+func (s *SQLSmith) binaryOperationExpr(depth int) ast.ExprNode {
 	node := ast.BinaryOperationExpr{}
 	if depth > 0 {
 		r := util.Rd(4)
@@ -107,29 +101,76 @@ func (s *SQLSmith) binaryOperationExpr(depth int) *ast.BinaryOperationExpr {
 		default:
 			node.Op = opcode.LogicAnd
 		}
-		node.L = s.binaryOperationExpr(0)
-		node.R = s.binaryOperationExpr(depth - 1)
+		node.L = s.binaryOperationExpr(depth - 1)
+		node.R = s.binaryOperationExpr(0)
 	} else {
-		r := util.Rd(4)
-		switch r {
+		switch util.Rd(4) {
 		case 0:
-			node.Op = opcode.GT
-		case 1:
-			node.Op = opcode.LT
-		case 2:
-			node.Op = opcode.NE
+			return s.patternInExpr()
 		default:
-			node.Op = opcode.EQ
-		}
-		node.L = &ast.ColumnNameExpr{}
-		r = util.Rd(3)
-		switch r{
-		case 0:
-			// hope there is an empty value type
-			node.R = ast.NewValueExpr(1)
-		default:
-			node.R = &ast.ColumnNameExpr{}
+			switch util.Rd(4) {
+			case 0:
+				node.Op = opcode.GT
+			case 1:
+				node.Op = opcode.LT
+			case 2:
+				node.Op = opcode.NE
+			default:
+				node.Op = opcode.EQ
+			}
+			node.L = s.exprNode()
+			node.R = s.exprNode()
 		}
 	}
 	return &node
 }
+
+func (s *SQLSmith) patternInExpr() *ast.PatternInExpr {
+	expr := s.exprNode()
+	switch node := expr.(type) {
+	case *ast.SubqueryExpr:
+		// may need refine after fully support of ResultSetNode interface
+		node.Query.(*ast.SelectStmt).Limit = &ast.Limit {
+			Count: ast.NewValueExpr(1),
+		}
+	}
+
+	return &ast.PatternInExpr{
+		Expr: expr,
+		Sel: s.subqueryExpr(),
+	}
+}
+
+func (s *SQLSmith) subqueryExpr() *ast.SubqueryExpr {
+	return &ast.SubqueryExpr{
+		Query: s.selectStmt(util.Rd(2)),
+		MultiRows: true,
+	}
+}
+
+func (s *SQLSmith) exprNode() ast.ExprNode {
+	switch util.Rd(3) {
+	case 0:
+		// hope there is an empty value type
+		return ast.NewValueExpr(1)
+	case 1:
+		return &ast.ColumnNameExpr{}
+	case 2:
+		return s.subqueryExpr()
+	}
+	panic("unhandled switch")	
+}
+
+// func (s *SQLSmith) whereExprNode(depth int) ast.ExprNode {
+// 	whereCount := util.Rd(4)
+// 	if whereCount == 0 {
+// 		return nil
+// 	}
+// 	var binaryOperation *ast.BinaryOperationExpr
+// 	for i := 0; i < whereCount; i++ {
+// 		binaryOperation = 
+// 	}
+// 	return binaryOperation
+// }
+
+// func (s *SQLSmith) whereExprNode(depth int)

@@ -11,9 +11,7 @@ import (
 
 // SelectStmt make random select statement SQL
 func (s *SQLSmith) SelectStmt(depth int) (string, error) {
-	s.depth = 1
-	s.maxDepth = depth
-	tree := s.selectStmt(1)
+	tree := s.selectStmt(depth)
 	return s.Walk(tree)
 }
 

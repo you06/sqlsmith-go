@@ -14,7 +14,7 @@ var miscellaneousFunctions = []*functionClass{
 	{ast.IsIPv4Compat, 1, 1, false, true},
 	{ast.IsIPv4Mapped, 1, 1, false, true},
 	{ast.IsIPv6, 1, 1, false, true},
-	{ast.IsUsedLock, 1, 1, false, true},
+	// {ast.IsUsedLock, 1, 1, false, true},
 	// {ast.MasterPosWait, 2, 4, false, true},
 	{ast.NameConst, 2, 2, false, true},
 	// {ast.ReleaseAllLocks, 0, 0, false, true},

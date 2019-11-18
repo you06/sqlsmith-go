@@ -48,6 +48,7 @@ func (s *StateFlow) walkSelectStmt(node *ast.SelectStmt) *types.Table {
 		s.walkSelectStmtColumns(node, table, true)
 	}
 	s.walkOrderByClause(node.OrderBy, table)
+	s.walkWhereClause(node.Where, table)
 	return table
 }
 
@@ -165,6 +166,8 @@ func (s *StateFlow) walkExprNode(node ast.ExprNode, table *types.Table, column *
 		return s.walkColumnNameExpr(node, table)
 	case *driver.ValueExpr:
 		s.walkValueExpr(node, table, column)
+	case *ast.PatternInExpr:
+		s.walkPatternInExpr(node, table)
 	}
 	return nil
 }
@@ -269,4 +272,37 @@ func (s *StateFlow) walkOrderByClause(node *ast.OrderByClause, table *types.Tabl
 
 		node.Items = append(node.Items, &item)
 	}
+}
+
+func (s *StateFlow) walkWhereClause(node ast.ExprNode, table *types.Table) {
+	switch node := node.(type) {
+	case *ast.BinaryOperationExpr:
+		s.walkExprNode(node.R, table, s.walkExprNode(node.L, table, nil))
+	}
+}
+
+func (s *StateFlow) walkPatternInExpr(node *ast.PatternInExpr, table *types.Table) {
+	if util.Rd(2) == 0 {
+		node.Not = true
+	} else {
+		node.Not = false
+	}
+	column := table.RandColumn()
+	node.Expr = &ast.ColumnNameExpr{
+		Name: &ast.ColumnName{
+			Name: model.NewCIStr(column.Column),
+		},
+	}
+	switch node := node.Sel.(type) {
+	case *ast.SubqueryExpr:
+		_ = s.walkSubqueryExpr(node)
+	}
+}
+
+func (s *StateFlow) walkSubqueryExpr(node *ast.SubqueryExpr) *types.Table {
+	switch node := node.Query.(type) {
+	case *ast.SelectStmt:
+		return s.walkSelectStmt(node)
+	}
+	panic("unhandled switch")
 }

@@ -12,7 +12,7 @@ var encryptionFunctions = []*functionClass{
 	// {ast.Decode, 2, 2, false, true},
 	{ast.DesDecrypt, 1, 2, false, true},
 	{ast.DesEncrypt, 1, 2, false, true},
-	{ast.Encode, 2, 2, false, true},
+	// {ast.Encode, 2, 2, false, true},
 	{ast.Encrypt, 1, 2, false, true},
 	{ast.MD5, 1, 1, false, true},
 	{ast.OldPassword, 1, 1, false, true},

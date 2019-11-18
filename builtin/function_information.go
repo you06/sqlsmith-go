@@ -18,9 +18,9 @@ var informationFunctions = []*functionClass{
 	{ast.User, 0, 0, false, true},
 	{ast.Version, 0, 0, false, true},
 	{ast.Benchmark, 2, 2, false, true},
-	{ast.Charset, 1, 1, false, true},
-	{ast.Coercibility, 1, 1, false, true},
-	{ast.Collation, 1, 1, false, true},
+	// {ast.Charset, 1, 1, false, true},
+	// {ast.Coercibility, 1, 1, false, true},
+	// {ast.Collation, 1, 1, false, true},
 	{ast.RowCount, 0, 0, false, true},
 	// Will make difference in abtest
 	// {ast.SessionUser, 0, 0, false, true},

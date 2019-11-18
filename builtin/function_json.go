@@ -19,7 +19,7 @@ var jsonFunctions = []*functionClass{
 	{ast.JSONValid, 1, 1, false, true},
 	{ast.JSONArrayAppend, 3, -1, false, true},
 	{ast.JSONArrayInsert, 3, -1, false, true},
-	{ast.JSONMergePatch, 2, -1, false, true},
+	// {ast.JSONMergePatch, 2, -1, false, true},
 	{ast.JSONMergePreserve, 2, -1, false, true},
 	// {ast.JSONPretty, 1, 1, false, true},
 	{ast.JSONQuote, 1, 1, false, true},
