@@ -1,6 +1,7 @@
 package stateflow
 
 import (
+	"log"
 	"github.com/pingcap/tidb/types/parser_driver"
 	tidbTypes "github.com/pingcap/tidb/types"
 	"github.com/pingcap/parser/ast"
@@ -48,7 +49,8 @@ func (s *StateFlow) walkSelectStmt(node *ast.SelectStmt) *types.Table {
 		s.walkSelectStmtColumns(node, table, true)
 	}
 	s.walkOrderByClause(node.OrderBy, table)
-	s.walkWhereClause(node.Where, table)
+	// s.walkWhereClause(node.Where, table)
+	s.walkExprNode(node.Where, table, nil)
 	return table
 }
 
@@ -168,6 +170,8 @@ func (s *StateFlow) walkExprNode(node ast.ExprNode, table *types.Table, column *
 		s.walkValueExpr(node, table, column)
 	case *ast.PatternInExpr:
 		s.walkPatternInExpr(node, table)
+	case *ast.SubqueryExpr:
+		return s.walkSubqueryExpr(node).RandColumn()
 	}
 	return nil
 }
@@ -288,15 +292,19 @@ func (s *StateFlow) walkPatternInExpr(node *ast.PatternInExpr, table *types.Tabl
 		node.Not = false
 	}
 	column := table.RandColumn()
+	log.Println(column)
 	node.Expr = &ast.ColumnNameExpr{
 		Name: &ast.ColumnName{
+			// Schema: model.NewCIStr(""),
+			// Table: model.NewCIStr(""),
 			Name: model.NewCIStr(column.Column),
 		},
 	}
-	switch node := node.Sel.(type) {
-	case *ast.SubqueryExpr:
-		_ = s.walkSubqueryExpr(node)
-	}
+	s.walkExprNode(node.Sel, table, nil)
+	// switch node := node.Sel.(type) {
+	// case *ast.SubqueryExpr:
+	// 	_ = s.walkSubqueryExpr(node)
+	// }
 }
 
 func (s *StateFlow) walkSubqueryExpr(node *ast.SubqueryExpr) *types.Table {

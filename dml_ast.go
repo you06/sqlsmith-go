@@ -17,7 +17,12 @@ func (s *SQLSmith) selectStmt(depth int) ast.Node {
 		OrderBy: &ast.OrderByClause{},
 	}
 
-	selectStmtNode.Where = s.binaryOperationExpr(util.Rd(depth + 1))
+	if depth <= 1 {
+		selectStmtNode.Where = s.binaryOperationExpr(0)
+	} else {
+		selectStmtNode.Where = s.binaryOperationExpr(util.Rd(depth))
+	}
+	
 
 	selectStmtNode.From = s.tableRefsClause(depth)
 
@@ -64,7 +69,7 @@ func (s *SQLSmith) tableRefsClause(depth int) *ast.TableRefsClause {
 		},
 	}
 
-	if s.depth > 1 {
+	if depth > 1 {
 		// if s.rd(100) > 50 {
 		// 	tableRefsClause.TableRefs.Right = &ast.TableName{}
 		// } else {
@@ -118,7 +123,7 @@ func (s *SQLSmith) binaryOperationExpr(depth int) ast.ExprNode {
 			default:
 				node.Op = opcode.EQ
 			}
-			node.L = s.exprNode()
+			node.L = &ast.ColumnNameExpr{}
 			node.R = s.exprNode()
 		}
 	}
@@ -126,37 +131,37 @@ func (s *SQLSmith) binaryOperationExpr(depth int) ast.ExprNode {
 }
 
 func (s *SQLSmith) patternInExpr() *ast.PatternInExpr {
-	expr := s.exprNode()
-	switch node := expr.(type) {
-	case *ast.SubqueryExpr:
-		// may need refine after fully support of ResultSetNode interface
-		node.Query.(*ast.SelectStmt).Limit = &ast.Limit {
-			Count: ast.NewValueExpr(1),
-		}
-	}
+	// expr := s.exprNode()
+	// switch node := expr.(type) {
+	// case *ast.SubqueryExpr:
+	// 	// may need refine after fully support of ResultSetNode interface
+	// 	node.Query.(*ast.SelectStmt).Limit = &ast.Limit {
+	// 		Count: ast.NewValueExpr(1),
+	// 	}
+	// }
 
 	return &ast.PatternInExpr{
-		Expr: expr,
+		Expr: &ast.ColumnNameExpr{},
 		Sel: s.subqueryExpr(),
 	}
 }
 
 func (s *SQLSmith) subqueryExpr() *ast.SubqueryExpr {
 	return &ast.SubqueryExpr{
-		Query: s.selectStmt(util.Rd(2)),
+		Query: s.selectStmt(1),
 		MultiRows: true,
 	}
 }
 
 func (s *SQLSmith) exprNode() ast.ExprNode {
-	switch util.Rd(3) {
+	switch util.Rd(12) {
 	case 0:
+		return &ast.ColumnNameExpr{}
+	case 1:
+		return s.subqueryExpr()
+	default:
 		// hope there is an empty value type
 		return ast.NewValueExpr(1)
-	case 1:
-		return &ast.ColumnNameExpr{}
-	case 2:
-		return s.subqueryExpr()
 	}
 	panic("unhandled switch")	
 }
