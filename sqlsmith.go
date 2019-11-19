@@ -64,6 +64,11 @@ func (s *SQLSmith) Stable() {
 	s.stable = true
 }
 
+// SetStable set stable to given value
+func (s *SQLSmith) SetStable(stable bool) {
+	s.stable = stable
+}
+
 // Walk will walk the tree and fillin tables and columns data
 func (s *SQLSmith) Walk(tree ast.Node) (string, error) {
 	node := stateflow.New(s.GetDB(s.currDB), s.stable).WalkTree(tree)
