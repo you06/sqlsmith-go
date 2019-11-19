@@ -18,7 +18,11 @@ func (s *SQLSmith) selectStmt(depth int) ast.Node {
 	}
 
 	if depth <= 1 {
-		selectStmtNode.Where = s.binaryOperationExpr(0, 0)
+		complex := 0
+		if util.Rd(3) == 0 {
+			complex = 1
+		}
+		selectStmtNode.Where = s.binaryOperationExpr(0, complex)
 	} else {
 		selectStmtNode.Where = s.binaryOperationExpr(util.Rd(depth), 1)
 	}

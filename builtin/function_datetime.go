@@ -39,7 +39,7 @@ var datetimeFunctions = []*functionClass{
 	{ast.MonthName, 1, 1, false, true},
 	// {ast.Now, 0, 1, false, true},
 	{ast.PeriodAdd, 2, 2, false, true},
-	{ast.PeriodDiff, 2, 2, false, true},
+	// {ast.PeriodDiff, 2, 2, false, true},
 	{ast.Quarter, 1, 1, false, true},
 	{ast.SecToTime, 1, 1, false, true},
 	{ast.Second, 1, 1, false, true},
