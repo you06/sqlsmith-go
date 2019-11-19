@@ -76,7 +76,7 @@ func TestSQLSmith_Select(t *testing.T) {
 	ss.LoadSchema(testSchema)
 
 	ss.SetDB(testSchemaName)
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 500; i++ {
 		sql, err := ss.SelectStmt(1 + rand.Intn(5))
 		if err != nil {
 			t.Log(sql, err)

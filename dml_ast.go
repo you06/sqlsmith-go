@@ -154,7 +154,7 @@ func (s *SQLSmith) subqueryExpr() *ast.SubqueryExpr {
 }
 
 func (s *SQLSmith) exprNode() ast.ExprNode {
-	switch util.Rd(3) {
+	switch util.Rd(6) {
 	case 0:
 		return &ast.ColumnNameExpr{}
 	case 1:
