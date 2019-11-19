@@ -8,7 +8,25 @@ import (
 	tidbTypes "github.com/pingcap/tidb/types"
 )
 
-func GenerateDateItemString(columnType string) string {
+// GenerateRandDataItem rand data item with rand type
+func GenerateRandDataItem() interface{} {
+	switch Rd(5) {
+	case 0:
+		return GenerateDataItem("varchar")
+	case 1:
+		return GenerateDataItem("text")
+	case 2:
+		return GenerateDataItem("int")
+	case 3:
+		return GenerateDataItem("timestamp")
+	case 4:
+		return GenerateDataItem("float")
+	}
+	panic("unhandled switch")
+}
+
+// GenerateDataItemString rand data with given type
+func GenerateDataItemString(columnType string) string {
 	d := GenerateDataItem(columnType)
 	switch c := d.(type) {
 	case string:
@@ -25,6 +43,7 @@ func GenerateDateItemString(columnType string) string {
 	return "not implement data transfer"
 }
 
+// GenerateDataItem rand data interface with given type
 func GenerateDataItem(columnType string) interface{} {
 	var res interface{}
 	switch columnType {

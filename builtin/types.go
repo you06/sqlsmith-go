@@ -7,4 +7,5 @@ type functionClass struct {
 	maxArg int
 	constArg bool
 	mysql bool
+	stable bool
 }

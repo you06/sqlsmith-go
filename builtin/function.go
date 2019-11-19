@@ -4,21 +4,26 @@ import (
 	"github.com/pingcap/parser/ast"
 	"github.com/pingcap/parser/model"
 	"github.com/you06/sqlsmith-go/types"
+	"github.com/you06/sqlsmith-go/util"
 )
 
 // GenerateFuncCallExpr generate random builtin chain
-func GenerateFuncCallExpr(table *types.Table, args int) *ast.FuncCallExpr {
+func GenerateFuncCallExpr(table *types.Table, args int, stable bool) ast.ExprNode {
+	if args == 0 && util.Rd(2) == 0 {
+		return ast.NewValueExpr(util.GenerateRandDataItem())
+	}
+
 	funcCallExpr := ast.FuncCallExpr{}
 
-	fns := getValidArgsFunc(args)
-	fn := copyFunc(fns[rd(len(fns))])
+	fns := getValidArgsFunc(args, stable)
+	fn := copyFunc(fns[util.Rd(len(fns))])
 	funcCallExpr.FnName = model.NewCIStr(fn.name)
 	for i := 0; i < args; i++ {
-		r := rd(100)
+		r := util.Rd(100)
 		if r > 80 {
-			funcCallExpr.Args = append(funcCallExpr.Args, GenerateFuncCallExpr(table, 1 + rd(3)))	
+			funcCallExpr.Args = append(funcCallExpr.Args, GenerateFuncCallExpr(table, 1 + util.Rd(3), stable))	
 		}
-		funcCallExpr.Args = append(funcCallExpr.Args, GenerateFuncCallExpr(table, 0))
+		funcCallExpr.Args = append(funcCallExpr.Args, GenerateFuncCallExpr(table, 0, stable))
 	}
 	// if args != 0 {
 	// 	log.Println(funcCallExpr)
@@ -29,10 +34,13 @@ func GenerateFuncCallExpr(table *types.Table, args int) *ast.FuncCallExpr {
 	return &funcCallExpr
 }
 
-func getValidArgsFunc(args int) []*functionClass {
+func getValidArgsFunc(args int, stable bool) []*functionClass {
 	var fns []*functionClass
 	for _, fn := range getFuncMap() {
 		if fn.minArg > args {
+			continue
+		}
+		if fn.stable != stable {
 			continue
 		}
 		if fn.maxArg == -1 || fn.maxArg >= args {

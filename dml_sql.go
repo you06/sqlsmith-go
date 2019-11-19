@@ -56,7 +56,7 @@ func (s *SQLSmith) InsertStmt(fn bool) (string, error) {
 	var vals []string
 	for _, column := range columns {
 		if fn && s.rdFloat64() < 0.5 {
-			builtinFn := builtin.GenerateFuncCallExpr(nil, s.rd(3))
+			builtinFn := builtin.GenerateFuncCallExpr(nil, s.rd(3), s.stable)
 			builtinStr, err := util.BufferOut(builtinFn)
 			if err != nil {
 				return "", err

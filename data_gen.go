@@ -34,7 +34,7 @@ func (s *SQLSmith) BatchData(total, batchSize int) ([]string, error) {
 		for i := 0; i < total; i++ {
 			var line []string
 			for _, column := range columns {
-				line = append(line, util.GenerateDateItemString(column.DataType))
+				line = append(line, util.GenerateDataItemString(column.DataType))
 			}
 			lines = append(lines, line)
 			count ++

@@ -152,7 +152,7 @@ func (s *StateFlow) walkSelectStmtColumns(node *ast.SelectStmt, table *types.Tab
 			node.Fields.Fields = append(node.Fields.Fields, &selectField)
 		} else {
 			node.Fields.Fields = append(node.Fields.Fields, &ast.SelectField{
-				Expr: builtin.GenerateFuncCallExpr(table, util.Rd(4)),
+				Expr: builtin.GenerateFuncCallExpr(table, util.Rd(4), s.stable),
 				AsName: model.NewCIStr(column.Column),
 			})
 		}

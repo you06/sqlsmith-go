@@ -12,10 +12,11 @@ type StateFlow struct {
 	db         *types.Database
 	rand       *rand.Rand
 	tableIndex int
+	stable     bool
 }
 
 // New Create StateFlow
-func New(db *types.Database) *StateFlow {
+func New(db *types.Database, stable bool) *StateFlow {
 	// copy whole db here may cost time, but ensure the global safety
 	// maybe a future TODO
 	return &StateFlow{
