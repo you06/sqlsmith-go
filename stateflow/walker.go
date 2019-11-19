@@ -1,7 +1,6 @@
 package stateflow
 
 import (
-	"log"
 	"github.com/pingcap/tidb/types/parser_driver"
 	tidbTypes "github.com/pingcap/tidb/types"
 	"github.com/pingcap/parser/ast"
@@ -292,7 +291,6 @@ func (s *StateFlow) walkPatternInExpr(node *ast.PatternInExpr, table *types.Tabl
 		node.Not = false
 	}
 	column := table.RandColumn()
-	log.Println(column)
 	node.Expr = &ast.ColumnNameExpr{
 		Name: &ast.ColumnName{
 			// Schema: model.NewCIStr(""),

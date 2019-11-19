@@ -123,7 +123,7 @@ func (s *SQLSmith) binaryOperationExpr(depth int) ast.ExprNode {
 			default:
 				node.Op = opcode.EQ
 			}
-			node.L = &ast.ColumnNameExpr{}
+			node.L = s.exprNode()
 			node.R = s.exprNode()
 		}
 	}
@@ -154,7 +154,7 @@ func (s *SQLSmith) subqueryExpr() *ast.SubqueryExpr {
 }
 
 func (s *SQLSmith) exprNode() ast.ExprNode {
-	switch util.Rd(12) {
+	switch util.Rd(3) {
 	case 0:
 		return &ast.ColumnNameExpr{}
 	case 1:
