@@ -1,6 +1,9 @@
 package sqlsmith
 
-import "testing"
+import (
+	"math/rand"
+	"testing"
+)
 
 var testSchema = [][5]string{
 	{"community", "comments", "BASE TABLE", "id", "int(11)"},
@@ -73,7 +76,13 @@ func TestSQLSmith_Select(t *testing.T) {
 	ss.LoadSchema(testSchema)
 
 	ss.SetDB(testSchemaName)
-	sql, _ := ss.SelectStmt(3)
+	for i := 0; i < 10; i++ {
+		sql, err := ss.SelectStmt(1 + rand.Intn(5))
+		if err != nil {
+			t.Log(sql, err)
+		}
+	}
+	sql, _ := ss.SelectStmt(6)
 	t.Log(sql)
 }
 

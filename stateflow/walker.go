@@ -290,15 +290,42 @@ func (s *StateFlow) walkPatternInExpr(node *ast.PatternInExpr, table *types.Tabl
 	} else {
 		node.Not = false
 	}
-	column := table.RandColumn()
-	node.Expr = &ast.ColumnNameExpr{
-		Name: &ast.ColumnName{
-			// Schema: model.NewCIStr(""),
-			// Table: model.NewCIStr(""),
-			Name: model.NewCIStr(column.Column),
-		},
+
+	var subTable *types.Table
+
+	switch node := node.Sel.(type) {
+	case *ast.SubqueryExpr:
+		subTable = s.walkSubqueryExpr(node)
+		for len(subTable.Columns) == 0 || len(subTable.Columns) > len(table.Columns) {
+			subTable = s.walkSubqueryExpr(node)
+		}
+	default:
+		panic("unhandled switch")
 	}
-	s.walkExprNode(node.Sel, table, nil)
+
+	var (
+		subColumns = subTable.GetColumns()
+		columns = table.GetColumns()
+	)
+	if len(columns) == 1 {
+		node.Expr = &ast.ColumnNameExpr{
+			Name: &ast.ColumnName{
+				// Schema: model.NewCIStr(""),
+				// Table: model.NewCIStr(""),
+				Name: model.NewCIStr(table.RandColumn().Column),
+			},
+		}
+	} else {
+		rowExpr := ast.RowExpr{}
+		for index := range subColumns {
+			rowExpr.Values = append(rowExpr.Values, &ast.ColumnNameExpr{
+				Name: &ast.ColumnName{
+					Name: model.NewCIStr(columns[index].Column),
+				},
+			})
+		}
+		node.Expr = &rowExpr
+	}
 	// switch node := node.Sel.(type) {
 	// case *ast.SubqueryExpr:
 	// 	_ = s.walkSubqueryExpr(node)
