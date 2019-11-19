@@ -124,8 +124,8 @@ func (s *SQLSmith) binaryOperationExpr(depth, complex int) ast.ExprNode {
 				default:
 					node.Op = opcode.EQ
 				}
-				node.L = s.exprNode()
-				node.R = s.exprNode()
+				node.L = s.exprNode(false)
+				node.R = s.exprNode(true)
 			}
 		} else {
 			switch util.Rd(4) {
@@ -168,7 +168,7 @@ func (s *SQLSmith) subqueryExpr() *ast.SubqueryExpr {
 	}
 }
 
-func (s *SQLSmith) exprNode() ast.ExprNode {
+func (s *SQLSmith) exprNode(cons bool) ast.ExprNode {
 	switch util.Rd(6) {
 	case 0:
 		return &ast.ColumnNameExpr{}
@@ -176,9 +176,12 @@ func (s *SQLSmith) exprNode() ast.ExprNode {
 		return s.subqueryExpr()
 	default:
 		// hope there is an empty value type
-		return ast.NewValueExpr(1)
+		if cons {
+			return ast.NewValueExpr(1)
+		}
+		return &ast.ColumnNameExpr{}
 	}
-	panic("unhandled switch")	
+	// panic("unhandled switch")
 }
 
 // func (s *SQLSmith) whereExprNode(depth int) ast.ExprNode {
