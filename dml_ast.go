@@ -110,8 +110,8 @@ func (s *SQLSmith) binaryOperationExpr(depth, complex int) ast.ExprNode {
 		default:
 			node.Op = opcode.LogicAnd
 		}
-		node.L = s.binaryOperationExpr(depth - 1, 1)
-		node.R = s.binaryOperationExpr(0, 1)
+		node.L = s.binaryOperationExpr(depth - 1, complex)
+		node.R = s.binaryOperationExpr(0, complex)
 	} else {
 		if complex > 0 {
 			switch util.Rd(4) {
