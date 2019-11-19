@@ -44,8 +44,8 @@ func (s *SQLSmith) updateStmt() ast.Node {
 	}
 
 	whereRand := s.rd(10)
-	if whereRand < 5 {
-		updateStmtNode.Where = s.binaryOperationExpr(whereRand, 1)
+	if whereRand < 8 {
+		updateStmtNode.Where = s.binaryOperationExpr(whereRand, 0)
 	} else {
 		updateStmtNode.Where = ast.NewValueExpr(1)
 	}
