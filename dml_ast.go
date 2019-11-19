@@ -18,9 +18,9 @@ func (s *SQLSmith) selectStmt(depth int) ast.Node {
 	}
 
 	if depth <= 1 {
-		selectStmtNode.Where = s.binaryOperationExpr(0)
+		selectStmtNode.Where = s.binaryOperationExpr(0, 0)
 	} else {
-		selectStmtNode.Where = s.binaryOperationExpr(util.Rd(depth))
+		selectStmtNode.Where = s.binaryOperationExpr(util.Rd(depth), 1)
 	}
 	
 
@@ -41,7 +41,7 @@ func (s *SQLSmith) updateStmt() ast.Node {
 
 	whereRand := s.rd(10)
 	if whereRand < 5 {
-		updateStmtNode.Where = s.binaryOperationExpr(whereRand)
+		updateStmtNode.Where = s.binaryOperationExpr(whereRand, 1)
 	} else {
 		updateStmtNode.Where = ast.NewValueExpr(1)
 	}
@@ -94,7 +94,7 @@ func (s *SQLSmith) tableRefsClause(depth int) *ast.TableRefsClause {
 	return &tableRefsClause
 }
 
-func (s *SQLSmith) binaryOperationExpr(depth int) ast.ExprNode {
+func (s *SQLSmith) binaryOperationExpr(depth, complex int) ast.ExprNode {
 	node := ast.BinaryOperationExpr{}
 	if depth > 0 {
 		r := util.Rd(4)
@@ -106,13 +106,28 @@ func (s *SQLSmith) binaryOperationExpr(depth int) ast.ExprNode {
 		default:
 			node.Op = opcode.LogicAnd
 		}
-		node.L = s.binaryOperationExpr(depth - 1)
-		node.R = s.binaryOperationExpr(0)
+		node.L = s.binaryOperationExpr(depth - 1, 1)
+		node.R = s.binaryOperationExpr(0, 1)
 	} else {
-		switch util.Rd(4) {
-		case 0:
-			return s.patternInExpr()
-		default:
+		if complex > 0 {
+			switch util.Rd(4) {
+			case 0:
+				return s.patternInExpr()
+			default:
+				switch util.Rd(4) {
+				case 0:
+					node.Op = opcode.GT
+				case 1:
+					node.Op = opcode.LT
+				case 2:
+					node.Op = opcode.NE
+				default:
+					node.Op = opcode.EQ
+				}
+				node.L = s.exprNode()
+				node.R = s.exprNode()
+			}
+		} else {
 			switch util.Rd(4) {
 			case 0:
 				node.Op = opcode.GT
@@ -123,8 +138,8 @@ func (s *SQLSmith) binaryOperationExpr(depth int) ast.ExprNode {
 			default:
 				node.Op = opcode.EQ
 			}
-			node.L = s.exprNode()
-			node.R = s.exprNode()
+			node.L = &ast.ColumnNameExpr{}
+			node.R = ast.NewValueExpr(1)
 		}
 	}
 	return &node
