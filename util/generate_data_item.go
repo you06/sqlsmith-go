@@ -4,6 +4,7 @@ package util
 import (
 	"fmt"
 	"time"
+	"strings"
 	"github.com/pingcap/parser/mysql"
 	tidbTypes "github.com/pingcap/tidb/types"
 )
@@ -62,7 +63,7 @@ func GenerateDataItem(columnType string) interface{} {
 }
 
 func GenerateStringItem() string {
-	return RdString(Rd(100))
+	return strings.ToLower(RdString(Rd(100)))
 }
 
 func GenerateIntItem() int {

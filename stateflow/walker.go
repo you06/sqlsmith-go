@@ -160,17 +160,17 @@ func (s *StateFlow) walkSelectStmtColumns(node *ast.SelectStmt, table *types.Tab
 }
 
 func (s *StateFlow) walkExprNode(node ast.ExprNode, table *types.Table, column *types.Column) *types.Column {
-	switch node := node.(type) {
+	switch n := node.(type) {
 	case *ast.BinaryOperationExpr:
-		s.walkBinaryOperationExpr(node, table)
+		s.walkBinaryOperationExpr(n, table)
 	case *ast.ColumnNameExpr:
-		return s.walkColumnNameExpr(node, table)
+		return s.walkColumnNameExpr(n, table)
 	case *driver.ValueExpr:
-		s.walkValueExpr(node, table, column)
+		s.walkValueExpr(n, table, column)
 	case *ast.PatternInExpr:
-		s.walkPatternInExpr(node, table)
+		s.walkPatternInExpr(n, table)
 	case *ast.SubqueryExpr:
-		return s.walkSubqueryExpr(node).RandColumn()
+		return s.walkSubqueryExpr(n).RandColumn()
 	}
 	return nil
 }
@@ -189,6 +189,8 @@ func (s *StateFlow) walkValueExpr(node *driver.ValueExpr, table *types.Table, co
 		switch column.DataType {
 		case "varchar", "text":
 			node.SetString(util.GenerateStringItem())
+			node.TexprNode.Type.Charset = "utf8mb4"
+			node.TexprNode.Type.Collate = "utf8mb4_bin"
 		case "int":
 			node.SetInt64(int64(util.GenerateIntItem()))
 		case "float":
