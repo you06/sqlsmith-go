@@ -63,7 +63,7 @@ func GenerateDataItem(columnType string) interface{} {
 }
 
 func GenerateStringItem() string {
-	return strings.ToLower(RdString(Rd(100)))
+	return strings.ToUpper(RdString(Rd(100)))
 }
 
 func GenerateIntItem() int {
