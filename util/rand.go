@@ -63,13 +63,15 @@ func RdStringChar (length int) string {
 }
 
 func RdType () string {
-	switch Rd(5) {
+	switch Rd(6) {
 	case 0:
 		return "varchar"
 	case 1:
 		return "text"
 	case 2:
 		return "timestamp"
+	case 3:
+		return "datetime"
 	}
 	return "int"
 }
@@ -84,25 +86,29 @@ func RdDataLen(columnType string) int {
 		return RdRange(16, 64)
 	case "timestamp":
 		return -1
+	case "datetime":
+		return -1
 	case "text":
 		return -1
 	}
 	return 10
 }
 
-func RdColumnOptions(t string) []ast.ColumnOptionType {
+func RdColumnOptions(t string, stable bool) []ast.ColumnOptionType {
 	switch t {
 	case "timestamp":
-		return RdDateColumnOptions()
+		return RdDateColumnOptions(stable)
 	}
 
 	return []ast.ColumnOptionType{}
 }
 
-func RdDateColumnOptions() (options []ast.ColumnOptionType) {
+func RdDateColumnOptions(stable bool) (options []ast.ColumnOptionType) {
 	options = append(options, ast.ColumnOptionNotNull)
-	if Rd(2) == 0 {
-		options = append(options, ast.ColumnOptionDefaultValue)
+	if !stable {
+		if Rd(2) == 0 {
+			options = append(options, ast.ColumnOptionDefaultValue)
+		}
 	}
 	return
 }

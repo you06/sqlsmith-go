@@ -13,6 +13,8 @@ func Type2Tp(t string) byte {
 		return mysql.TypeVarchar
 	case "timestamp":
 		return mysql.TypeTimestamp
+	case "datetime":
+		return mysql.TypeDatetime
 	case "text":
 		return mysql.TypeBlob
 	}

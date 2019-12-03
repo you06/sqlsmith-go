@@ -168,16 +168,14 @@ func (s *StateFlow) randNewTable() *types.Table {
 		DataType: "int",
 		DataLen: 11,
 	}
-	if util.Rd(4) < 4 {
-		table.Columns["id"].AddOption(ast.ColumnOptionNotNull)
-		table.Columns["id"].AddOption(ast.ColumnOptionAutoIncrement)
-	}
+	table.Columns["id"].AddOption(ast.ColumnOptionNotNull)
+	table.Columns["id"].AddOption(ast.ColumnOptionAutoIncrement)
 	columnCount := util.RdRange(4, 20)
 	for i := 0; i < columnCount; i++ {
 		columnName := util.RdStringChar(util.RdRange(5, 10))
 		columnType := util.RdType()
 		columnLen := util.RdDataLen(columnType)
-		columnOptions := util.RdColumnOptions(columnType)
+		columnOptions := util.RdColumnOptions(columnType, s.stable)
 		table.Columns[columnName] = &types.Column{
 			DB: table.DB,
 			Table: table.Table,

@@ -11,7 +11,7 @@ import (
 
 // GenerateRandDataItem rand data item with rand type
 func GenerateRandDataItem() interface{} {
-	switch Rd(5) {
+	switch Rd(6) {
 	case 0:
 		return GenerateDataItem("varchar")
 	case 1:
@@ -19,9 +19,11 @@ func GenerateRandDataItem() interface{} {
 	case 2:
 		return GenerateDataItem("int")
 	case 3:
-		return GenerateDataItem("timestamp")
-	case 4:
 		return GenerateDataItem("float")
+	case 4:
+		return GenerateDataItem("timestamp")
+	case 5:
+		return GenerateDataItem("datetime")
 	}
 	panic("unhandled switch")
 }
@@ -54,7 +56,7 @@ func GenerateDataItem(columnType string) interface{} {
 		res = GenerateStringItem()
 	case "int":
 		res = GenerateIntItem()
-	case "timestamp":
+	case "timestamp", "datetime":
 		res = GenerateTiDBDateItem()
 	case "float":
 		res = GenerateFloatItem()
