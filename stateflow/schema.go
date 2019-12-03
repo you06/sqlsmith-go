@@ -175,7 +175,14 @@ func (s *StateFlow) randNewTable() *types.Table {
 		columnName := util.RdStringChar(util.RdRange(5, 10))
 		columnType := util.RdType()
 		columnLen := util.RdDataLen(columnType)
-		columnOptions := util.RdColumnOptions(columnType, s.stable)
+		columnOptions := util.RdColumnOptions(columnType)
+		if s.stable {
+			for i, o := range columnOptions {
+				if o == ast.ColumnOptionDefaultValue {
+					columnOptions = append(columnOptions[:i], columnOptions[i+1:]...)
+				}
+			}
+		}
 		table.Columns[columnName] = &types.Column{
 			DB: table.DB,
 			Table: table.Table,

@@ -22,5 +22,6 @@ func New(db *types.Database, stable bool) *StateFlow {
 	return &StateFlow{
 		db: db,
 		rand: rand.New(rand.NewSource(time.Now().UnixNano())),
+		stable: stable,
 	}
 }

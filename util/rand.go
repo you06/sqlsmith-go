@@ -94,21 +94,19 @@ func RdDataLen(columnType string) int {
 	return 10
 }
 
-func RdColumnOptions(t string, stable bool) []ast.ColumnOptionType {
+func RdColumnOptions(t string) []ast.ColumnOptionType {
 	switch t {
 	case "timestamp":
-		return RdDateColumnOptions(stable)
+		return RdDateColumnOptions()
 	}
 
 	return []ast.ColumnOptionType{}
 }
 
-func RdDateColumnOptions(stable bool) (options []ast.ColumnOptionType) {
+func RdDateColumnOptions() (options []ast.ColumnOptionType) {
 	options = append(options, ast.ColumnOptionNotNull)
-	if !stable {
-		if Rd(2) == 0 {
-			options = append(options, ast.ColumnOptionDefaultValue)
-		}
+	if Rd(2) == 0 {
+		options = append(options, ast.ColumnOptionDefaultValue)
 	}
 	return
 }
