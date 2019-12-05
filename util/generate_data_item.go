@@ -77,7 +77,11 @@ func GenerateFloatItem() float64 {
 }
 
 func GenerateDateItem() time.Time {
-	return RdDate()
+	t := RdDate()
+	for ifDaylightTime(t) {
+		t = RdDate()
+	}
+	return t
 }
 
 func GenerateTiDBDateItem() tidbTypes.Time {
@@ -85,4 +89,14 @@ func GenerateTiDBDateItem() tidbTypes.Time {
 		Time: tidbTypes.FromGoTime(GenerateDateItem()),
 		Type: mysql.TypeDatetime,
 	}
+}
+
+func ifDaylightTime(t time.Time) bool {
+	if t.Year() < 1986 || t.Year() > 1991 {
+		return false
+	}
+	if t.Month() < 4 || t.Month() > 9 {
+		return false
+	}
+	return true
 }
