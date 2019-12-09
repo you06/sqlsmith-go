@@ -4,8 +4,8 @@ package stateflow
 import (
 	"fmt"
 	"github.com/pingcap/parser/ast"
-	"github.com/you06/sqlsmith-go/types"
-	"github.com/you06/sqlsmith-go/util"
+	"github.com/pingcap/tipocket/go-sqlsmith/types"
+	"github.com/pingcap/tipocket/go-sqlsmith/util"
 )
 
 func (s *StateFlow) randTableFromTable(table *types.Table, newName bool, fn bool) (*types.Table) {

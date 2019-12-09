@@ -4,9 +4,9 @@ import (
 	"errors"
 	"fmt"
 	"strings"
-	"github.com/you06/sqlsmith-go/builtin"
-	"github.com/you06/sqlsmith-go/types"
-	"github.com/you06/sqlsmith-go/util"
+	"github.com/pingcap/tipocket/go-sqlsmith/builtin"
+	"github.com/pingcap/tipocket/go-sqlsmith/types"
+	"github.com/pingcap/tipocket/go-sqlsmith/util"
 )
 
 // SelectStmt make random select statement SQL

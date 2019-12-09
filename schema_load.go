@@ -4,7 +4,7 @@ import (
 	"strings"
 	"regexp"
 
-	"github.com/you06/sqlsmith-go/types"
+	"github.com/pingcap/tipocket/go-sqlsmith/types"
 )
 
 const typeRegex = `\(\d+\)`

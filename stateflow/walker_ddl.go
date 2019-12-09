@@ -6,9 +6,9 @@ import (
 	"github.com/pingcap/parser/model"
 	parserTypes "github.com/pingcap/parser/types"
 	tidbTypes "github.com/pingcap/tidb/types"
-	"github.com/you06/sqlsmith-go/builtin"
-	"github.com/you06/sqlsmith-go/types"
-	"github.com/you06/sqlsmith-go/util"
+	"github.com/pingcap/tipocket/go-sqlsmith/builtin"
+	"github.com/pingcap/tipocket/go-sqlsmith/types"
+	"github.com/pingcap/tipocket/go-sqlsmith/util"
 	"github.com/pingcap/tidb/types/parser_driver"
 )
 

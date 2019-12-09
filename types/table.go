@@ -2,7 +2,7 @@ package types
 
 import (
 	"sort"
-	"github.com/you06/sqlsmith-go/util"
+	"github.com/pingcap/tipocket/go-sqlsmith/util"
 )
 
 // Table defines database table

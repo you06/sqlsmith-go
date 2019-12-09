@@ -3,7 +3,7 @@ package sqlsmith
 import (
 	"github.com/pingcap/parser/ast"
 	"github.com/pingcap/parser/opcode"
-	"github.com/you06/sqlsmith-go/util"
+	"github.com/pingcap/tipocket/go-sqlsmith/util"
 )
 
 func (s *SQLSmith) selectStmt(depth int) ast.Node {

@@ -2,7 +2,7 @@ package sqlsmith
 
 import (
 	"github.com/pingcap/parser/ast"
-	"github.com/you06/sqlsmith-go/util"
+	"github.com/pingcap/tipocket/go-sqlsmith/util"
 )
 
 func (s *SQLSmith) createTableStmt() ast.Node {

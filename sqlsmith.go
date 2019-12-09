@@ -6,9 +6,9 @@ import (
 
 	"github.com/juju/errors"
 	"github.com/pingcap/parser/ast"
-	"github.com/you06/sqlsmith-go/stateflow"
-	"github.com/you06/sqlsmith-go/types"
-	"github.com/you06/sqlsmith-go/util"
+	"github.com/pingcap/tipocket/go-sqlsmith/stateflow"
+	"github.com/pingcap/tipocket/go-sqlsmith/types"
+	"github.com/pingcap/tipocket/go-sqlsmith/util"
 
 	// _ "github.com/pingcap/tidb/types/parser_driver"
 )

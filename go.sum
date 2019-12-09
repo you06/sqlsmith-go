@@ -179,6 +179,8 @@ github.com/urfave/cli v1.20.0/go.mod h1:70zkFmudgCuE/ngEzBv17Jvp/497gISqfk5gWijb
 github.com/urfave/negroni v0.3.0/go.mod h1:Meg73S6kFm/4PpbYdq35yYWoCZ9mS/YSx+lKnmiohz4=
 github.com/xiang90/probing v0.0.0-20190116061207-43a291ad63a2/go.mod h1:UETIi67q53MR2AWcXfiuqkDkRtnGDLqkBTpCHuJHxtU=
 github.com/yookoala/realpath v1.0.0/go.mod h1:gJJMA9wuX7AcqLy1+ffPatSCySA1FQ2S8Ya9AIoYBpE=
+github.com/you06/sqlsmith-go v0.0.0-20191205065339-ef0a8db01d04 h1:hih+zXPzLEF1yh9/sLNPoUTnhwbiB/RtdMCi5lb/6BU=
+github.com/you06/sqlsmith-go v0.0.0-20191205065339-ef0a8db01d04/go.mod h1:93Hwm1LnxZfhdj7SyeKXgZU9ZufVmVs5DFfrP6nHI9I=
 github.com/you06/tidb v1.1.0-beta.0.20191107072401-0c82ff73f4b1 h1:sL0Q20zJNq7PJ+huIIPIq6wrNakCe9JYdiux4lc1GBg=
 github.com/you06/tidb v1.1.0-beta.0.20191107072401-0c82ff73f4b1/go.mod h1:N8LOrZQBeRpnWaQblZGc1tR9+Le7J2bHAGqSJ4NaNEY=
 github.com/you06/tidb v1.1.0-beta.0.20191107073350-1f019a46fa2c h1:cax99bJVXv0seFGcT69fL0Pmc67rL+hCufDbY32p+ZA=

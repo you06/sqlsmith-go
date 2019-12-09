@@ -3,7 +3,7 @@ package stateflow
 import (
 	"math/rand"
 	"time"
-	"github.com/you06/sqlsmith-go/types"
+	"github.com/pingcap/tipocket/go-sqlsmith/types"
 )
 
 // StateFlow defines the struct
